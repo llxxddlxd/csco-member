@@ -15,4 +15,12 @@ export const getMemeberStatus = params => { return axios.post(`${base}/MemberTyp
 export const getEducationStatus = params => { return axios.post(`${base}/Education`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
 export const getNationStatus = params => { return axios.post(`${base}/Nation`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
 export const getGenderStatus = params => { return axios.post(`${base}/Gender`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
-// export const getContent = params => { return axios.get(`${basea}/CompanyByCity`, { params: params }); };
+export const getNewMember = params => { return axios.post(`${base}/NewMember`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getTitle = params => { return axios.post(`${base}/Title`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getJob = params => { return axios.post(`${base}/Job`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getMajor = params => { return axios.post(`${base}/Major`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getMemberByProvince = params => { return axios.post(`${base}/MemberByProvince`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getCompanyByProvince = params => { return axios.post(`${base}/CompanyByProvince`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getMemberByYear = params => { return axios.post(`${base}/MemberByYear`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getMemberByMonth = params => { return axios.post(`${base}/MemberByMonth`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };
+export const getMemberByDay = params => { return axios.post(`${base}/MemberByDay`, params,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => res.data); };

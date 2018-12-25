@@ -9,7 +9,12 @@ import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
 //业务
 import statisticindex from './views/statistic/indexPage.vue'
-import echarts from './views/statistic/echarts.vue'
+import statisticmember from './views/statistic/memberPage.vue'
+import statistictitle from './views/statistic/titlePage.vue'
+import statisticjob from './views/statistic/jobPage.vue'
+import statisticmajor from './views/statistic/majorPage.vue'
+import statisticregion from './views/statistic/regionPage.vue' 
+// import echarts from './views/statistic/echarts.vue'
 // import vae from './views/charts/vae.vue'
 
 let routes = [
@@ -28,15 +33,15 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '首页',
+        name: '会员系统',
         iconCls: 'fa fa-user',
         children: [
-            { path: '/indexpage', component: statisticindex, name: '新增会员统计' },
-            { path: '/echarts', component: echarts, name: '新增会员统计' },
-            // { path: '/vae', component: vae, name: '地域分布' },
-            // { path: '/vae', component: vae, name: '职称统计' },
-            // { path: '/vae', component: vae, name: '单位职务统计' },
-            // { path: '/vae', component: vae, name: '专业特长及研究方向统计' },
+            { path: '/indexpage', component: statisticindex, name: '首页' },
+            { path: '/memberpage', component: statisticmember, name: '新增会员统计' },
+            { path: '/regionpage', component: statisticregion, name: '地域分布' },
+            { path: '/titlepage', component: statistictitle, name: '职称统计' },
+            { path: '/jobpage', component: statisticjob, name: '单位职务统计' },
+            { path: '/majorpage', component: statisticmajor, name: '专业特长及研究方向统计' },
         ]
     },
     {
