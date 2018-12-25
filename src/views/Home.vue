@@ -11,11 +11,9 @@
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
-					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+					<span class="el-dropdown-link userinfo-inner">{{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>我的消息</el-dropdown-item>
-						<el-dropdown-item>设置</el-dropdown-item>
-						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+						<el-dropdown-item divided @click.native="retreatLogout">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -72,6 +70,7 @@
 </template>
 
 <script>
+  import { retreatLogout } from '../api/api';
 	export default {
 		data() {
 			return {
@@ -104,7 +103,7 @@
 			handleselect: function (a, b) {
 			},
 			//退出登录
-			logout: function () {
+			retreatLogout: function () {
 				var _this = this;
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
@@ -128,9 +127,8 @@
 		mounted() {
 			var user = sessionStorage.getItem('user');
 			if (user) {
-				user = JSON.parse(user);
-				this.sysUserName = user.name || '';
-				this.sysUserAvatar = user.avatar || '';
+				//user = JSON.parse(user);
+				this.sysUserName = user || '';
 			}
 
 		}

@@ -1,68 +1,42 @@
-import Login from './views/Login.vue'
+// import Login from './views/Login.vue'Home
 import NotFound from './views/404.vue'
 import Home from './views/Home.vue'
 import Main from './views/Main.vue'
 import Table from './views/nav1/Table.vue'
 import Form from './views/nav1/Form.vue'
-import user from './views/nav1/user.vue'
 import Page4 from './views/nav2/Page4.vue'
 import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
-import echarts from './views/charts/echarts.vue'
+//业务
+import statisticindex from './views/statistic/indexPage.vue'
+import echarts from './views/statistic/echarts.vue'
+// import vae from './views/charts/vae.vue'
 
 let routes = [
-    {
-        path: '/login',
-        component: Login,
-        name: '',
-        hidden: true
-    },
+    // {
+    //     path: '/login',
+    //     component: Login,
+    //     name: '',
+    //     hidden: true
+    // },
     {
         path: '/404',
         component: NotFound,
         name: '',
         hidden: true
     },
-    //{ path: '/main', component: Main },
     {
         path: '/',
         component: Home,
-        name: '导航一',
-        iconCls: 'el-icon-message',//图标样式class
+        name: '首页',
+        iconCls: 'fa fa-user',
         children: [
-            { path: '/main', component: Main, name: '主页', hidden: true },
-            { path: '/table', component: Table, name: 'Table' },
-            { path: '/form', component: Form, name: 'Form' },
-            { path: '/user', component: user, name: '列表' },
-        ]
-    },
-    {
-        path: '/',
-        component: Home,
-        name: '导航二',
-        iconCls: 'fa fa-id-card-o',
-        children: [
-            { path: '/page4', component: Page4, name: '页面4' },
-            { path: '/page5', component: Page5, name: '页面5' }
-        ]
-    },
-    {
-        path: '/',
-        component: Home,
-        name: '',
-        iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
-        children: [
-            { path: '/page6', component: Page6, name: '导航三' }
-        ]
-    },
-    {
-        path: '/',
-        component: Home,
-        name: 'Charts',
-        iconCls: 'fa fa-bar-chart',
-        children: [
-            { path: '/echarts', component: echarts, name: 'echarts' }
+            { path: '/indexpage', component: statisticindex, name: '新增会员统计' },
+            { path: '/echarts', component: echarts, name: '新增会员统计' },
+            // { path: '/vae', component: vae, name: '地域分布' },
+            // { path: '/vae', component: vae, name: '职称统计' },
+            // { path: '/vae', component: vae, name: '单位职务统计' },
+            // { path: '/vae', component: vae, name: '专业特长及研究方向统计' },
         ]
     },
     {

@@ -50,11 +50,11 @@
 		data() {
 			return {
 				form: {
-					name: '',
+					userName: '',
 					region: '',
 					date1: '',
 					date2: '',
-					delivery: false,
+					delivery: false,	
 					type: [],
 					resource: '',
 					desc: ''

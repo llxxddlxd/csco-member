@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+					<el-input v-model="filters.userName" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
@@ -21,7 +21,7 @@
 			</el-table-column>
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
+			<el-table-column prop="userName" label="姓名" width="120" sortable>
 			</el-table-column>
 			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
 			</el-table-column>
@@ -32,7 +32,7 @@
 			<el-table-column prop="addr" label="地址" min-width="180" sortable>
 			</el-table-column>
 			<el-table-column label="操作" width="150">
-				<template scope="scope">
+				<template slot-scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
@@ -49,8 +49,8 @@
 		<!--编辑界面-->
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="editForm.name" auto-complete="off"></el-input>
+				<el-form-item label="姓名" prop="userName">
+					<el-input v-model="editForm.userName" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="性别">
 					<el-radio-group v-model="editForm.sex">
@@ -77,14 +77,12 @@
 		<!--新增界面-->
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
+				<el-form-item label="姓名" prop="userName">
+					<el-input v-model="addForm.userName" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+				<el-form-item label="手机号" prop="userTel">
+					<el-input v-model="addForm.userTel" auto-complete="off"></el-input>
+				</el-form-item>
 				</el-form-item>
 				<el-form-item label="年龄">
 					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
@@ -113,7 +111,7 @@
 		data() {
 			return {
 				filters: {
-					name: ''
+					userName: ''
 				},
 				users: [],
 				total: 0,
@@ -124,14 +122,16 @@
 				editFormVisible: false,//编辑界面是否显示
 				editLoading: false,
 				editFormRules: {
-					name: [
+					userName: [
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
 				editForm: {
 					id: 0,
-					name: '',
+					userName: '',
+					status: 0,
+					userTel:"15811346821",
 					sex: -1,
 					age: 0,
 					birth: '',
@@ -141,13 +141,13 @@
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false,
 				addFormRules: {
-					name: [
+					userName: [
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
 				//新增界面数据
 				addForm: {
-					name: '',
+					userName: '',
 					sex: -1,
 					age: 0,
 					birth: '',
@@ -169,7 +169,7 @@
 			getUsers() {
 				let para = {
 					page: this.page,
-					name: this.filters.name
+					userName: this.filters.userName
 				};
 				this.listLoading = true;
 				//NProgress.start();
@@ -210,7 +210,7 @@
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
-					name: '',
+					userName: '',
 					sex: -1,
 					age: 0,
 					birth: '',
