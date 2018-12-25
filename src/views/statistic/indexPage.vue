@@ -170,8 +170,8 @@
                     pay: '',
                     type: '',
                     create_time: '',
-                    userModel: '{"id":"0","name":"123","phone":"17628472610"}',
-                    courseModel: '{"id":"0","title":"123"}'
+                    // userModel: '{"id":"0","name":"123","phone":"17628472610"}',
+                    // courseModel: '{"id":"0","title":"123"}'
                 },
                 options: [{
                   value: 'year',
@@ -226,6 +226,7 @@
         methods: {
             typeChange:function(value){
                 console.log("typeChange,value:"+value)
+                this.drawColumnTotal();
             },
             // detali_userModelPhone: function (value) {
             //     return value.phone;
@@ -302,7 +303,19 @@
                     console.log(res); 
                     this.listLoading = false;
                     console.log(res.out_data);
-                    this.totalMemers = res.out_data.totalcount;  
+                    this.totalMemers = res.out_data.totalcount;   
+                    var newData= [];
+                    var newColumn= [];
+                    for(var i=0;i<res.data.length;i++){
+                        newColumn[i] = res.data[i].year;
+                        newData[i] = res.data[i].memberCount;
+                    }
+                    if(this.radioTotal=='1'){
+                        this.drawTotalFirst(newColumn,newData);  
+                    }
+                    else{
+                        this.drawTotalSecond(newColumn,newData);  
+                    }
                 });
                 
             },
@@ -364,7 +377,20 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.out_data);
-                    this.totalMemers = res.out_data.totalMemers;  
+
+                    this.totalMemers = res.out_data.totalcount;   
+                    var newData= [];
+                    var newColumn= [];
+                    for(var i=0;i<res.data.length;i++){
+                        newColumn[i] = res.data[i].day;
+                        newData[i] = res.data[i].memberCount;
+                    }
+                    if(this.radioTotal=='1'){
+                        this.drawTotalFirst(newColumn,newData);  
+                    }
+                    else{
+                        this.drawTotalSecond(newColumn,newData);  
+                    }
                 });
 
             },

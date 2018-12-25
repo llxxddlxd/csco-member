@@ -18,25 +18,28 @@
         <div>
             统计会员总数：{{totalMemers}}
             统计理事总数：{{totalCompany}}
+
         </div>
-       
-        <div> 
-            <div id="china-map">123</div>
-            
-            <!-- <div id="chartMemberSecond" style="width:100%; height:400px;"></div>       -->
-       
-        </div> 
 
+        <div class="echarts">
+            <div :style="{height:'400px',width:'80%'}" ref="myEchart"></div>
+        </div>
+
+ 
+        <div class="echarts">
+            <div :style="{height:'400px',width:'80%'}" ref="myEchartCompany"></div>
+        </div>
+
+ 
     </section>
-</template>
+   
 
-    <!-- <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
-    <script src=""></script>
-    <script src=""></script>
+</template>
 
 <script>
     import util from '../../common/js/util'
     import  '../../common/js/china.js'
+    import  '../../common/js/echarts.min.js'
     //import NProgress from 'nprogress'
     import { getMemberByProvince,getCompanyByProvince} from '../../api/api';
     // import moment from 'moment'
@@ -44,25 +47,23 @@
 
     console.log(222)
     export default {
+
+        props: ["userJson"],
         data() {
             return {
-                consumeList: [],
                 listLoading: false,
-                sels: [],//列表选中列
                 totalMemers:0, 
                 totalCompany:0, 
+                
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
                 
                 defaultStartDate: '',
                 defaultEndDate: '',
 
-                chartMemberFirst: null,
-                chartMemberSecond: null,
-                memberChart:null,
             }
         },
-        methods: { 
+        methods: {  
             formatDate: function(row, column){
                 return moment(row.create_time).format("YYYY-MM-DD HH:mm:ss")
             },
@@ -72,9 +73,11 @@
             },  
             selsChange: function (sels) {
                 this.sels = sels;
-            },
-            getMemberByProvince() {       
-                console.log("getMemberByProvince")    
+            }, 
+            
+            echartsMapMember:function(value){
+
+                 console.log("echartsMapMember")    
                 let para = {
                     Committeeid : 1,
                     Key : "79ECFB2F3F0C098B",
@@ -96,15 +99,154 @@
  
                     this.totalMemers = res.out_data['total']; 
                     console.log(res.data) 
-                    //构造地图
+                    var realData =[];
+                    let j = 0;
+                    // for (var i = 0;i<=10; i++) {
+                    for (var i = 0;i<=res.data.length - 1; i++) {
+                        console.log(res.data[i])
+                        if(res.data[i].name!="不详"){
 
-                    this.memberChart = echarts.init(document.getElementById('china-map'));
-                    this.echartsMapMember(res.data)
+                            var temp={};
+                            temp.value=res.data[i].count;
+                            var name = res.data[i].name;
+                            temp.name=name.replace("省","");
+                            realData[j]= temp;
+                            j++;
+                        }
+                    }  
+                let myChart = echarts.init(this.$refs.myEchart); //这里是为了获得容器所在位置 
+console.log(1112)
+                var option = {
+                    title : {
+                        // text: '订单量',
+                        // subtext: '纯属虚构',
+                        x:'center'
+                    },
+                    tooltip : { //提示框组件。
+                        trigger: 'item' //数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+                    },
+                    legend: {
+                        orient: 'horizontal', //图例的排列方向
+                        x:'left', //图例的位置
+                        data:['订单量']
+                    },
+
+                    visualMap: {//颜色的设置  dataRange
+                        x: 'left',
+                        y: 'center',
+                        splitList: [
+                            {start: 1500},
+                            {start: 900, end: 1500},
+                            {start: 310, end: 1000},
+                            {start: 200, end: 300},
+                            {start: 10, end: 200, label: '10 到 200（自定义label）'},
+                            {start: 5, end: 5, label: '5（自定义特殊颜色）', color: '#077FBA'},
+                            {end: 10}
+                        ],
+        //            min: 0,
+        //            max: 2500,
+        //            calculable : true,//颜色呈条状
+                        text:['高','低'],// 文本，默认为数值文本
+                        // color: ['#E0022B', '#E09107', '#A3E00B']
+                        color: ['#C1D3E3', '#077FBA', '#C9514C']
+                    },
+                    toolbox: {//工具栏
+                        show: false,
+                        orient : 'vertical',//工具栏 icon 的布局朝向
+                        x: 'right',
+                        y: 'center',
+                        feature : {//各工具配置项。
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
+                            restore : {show: true},//配置项还原。
+                            saveAsImage : {show: true}//保存为图片。
+                        }
+                    },
+                    roamController: {//控制地图的上下左右放大缩小 图上没有显示
+                        show: true,
+                        x: 'right',
+                        mapTypeControl: {
+                            'china': true
+                        }
+                    },
+                    series : [
+                        {
+                            name: '订单量',
+                            type: 'map',
+                            mapType: 'china',
+                            roam: false,//是否开启鼠标缩放和平移漫游
+                            itemStyle:{//地图区域的多边形 图形样式
+                                normal:{//是图形在默认状态下的样式
+                                    label:{
+                                        show:false,//是否显示标签
+                                        textStyle: {
+                                            color: "rgb(249, 249, 249)"
+                                        }
+                                    }
+                                },
+                                emphasis:{//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                                    label:{show:true}
+                                }
+                            },
+                            top:"3%",//组件距离容器的距离
+                            data:
+                            realData
+                            // [
+                            //     {name: '北京',value: Math.round(Math.random()*2000)},
+                            //     {name: '天津',value: Math.round(Math.random()*2000)},
+                             
+                            // ]
+                        }
+                    ]
+                };
+                console.log(323232)
+                myChart.setOption(option);
+                console.log(333)
+
                     return ;
                 });
             }, 
-            echartsMapMember:function(value){
-                console.log(1111)
+
+            echartsMapCompany:function(value){
+                  console.log("getCompanyByProvince")    
+                let para = {
+                    Committeeid : 1,
+                    Key : "79ECFB2F3F0C098B",
+                    startDay:"2018",
+                    endDay:"2019", 
+                };
+                
+                let ret = ''
+                for (let it in para) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
+                }
+                this.listLoading = true;
+                // URIEncoding="UTF-8";
+                getCompanyByProvince(ret).then((res) => {
+                    // res = JSON.parse(res)
+                    console.log(res.out_data);
+                    // this.totalcount = this.form.totalcount;
+                    this.listLoading = false; 
+                    this.totalCompany = res.out_data["total"];
+                    console.log(res.data)
+                     
+                      var realData =[];
+                    let j = 0;
+                    // for (var i = 0;i<=10; i++) {
+                    for (var i = 0;i<=res.data.length - 1; i++) {
+                        console.log(res.data[i])
+                        if(res.data[i].name!="不详"){
+
+                            var temp={};
+                            temp.value=res.data[i].count;
+                            var name = res.data[i].name;
+                            temp.name=name.replace("省","");
+                            realData[j]= temp;
+                            j++;
+                        }
+                    }
+                     
+                let myChart = echarts.init(this.$refs.myEchartCompany); //这里是为了获得容器所在位置 
 
                 var option = {
                     title : {
@@ -179,95 +321,37 @@
                                 }
                             },
                             top:"3%",//组件距离容器的距离
-                            data:[
-                                {name: '北京',value: Math.round(Math.random()*2000)},
-                                {name: '天津',value: Math.round(Math.random()*2000)},
-                                {name: '上海',value: Math.round(Math.random()*2000)},
-                                {name: '重庆',value: Math.round(Math.random()*2000)},
-                                {name: '河北',value: 0},
-                                {name: '河南',value: Math.round(Math.random()*2000)},
-                                {name: '云南',value: 5},
-                                {name: '辽宁',value: 305},
-                                {name: '黑龙江',value: Math.round(Math.random()*2000)},
-                                {name: '湖南',value: 200},
-                                {name: '安徽',value: Math.round(Math.random()*2000)},
-                                {name: '山东',value: Math.round(Math.random()*2000)},
-                                {name: '新疆',value: Math.round(Math.random()*2000)},
-                                {name: '江苏',value: Math.round(Math.random()*2000)},
-                                {name: '浙江',value: Math.round(Math.random()*2000)},
-                                {name: '江西',value: Math.round(Math.random()*2000)},
-                                {name: '湖北',value: Math.round(Math.random()*2000)},
-                                {name: '广西',value: Math.round(Math.random()*2000)},
-                                {name: '甘肃',value: Math.round(Math.random()*2000)},
-                                {name: '山西',value: Math.round(Math.random()*2000)},
-                                {name: '内蒙古',value: Math.round(Math.random()*2000)},
-                                {name: '陕西',value: Math.round(Math.random()*2000)},
-                                {name: '吉林',value: Math.round(Math.random()*2000)},
-                                {name: '福建',value: Math.round(Math.random()*2000)},
-                                {name: '贵州',value: Math.round(Math.random()*2000)},
-                                {name: '广东',value: Math.round(Math.random()*2000)},
-                                {name: '青海',value: Math.round(Math.random()*2000)},
-                                {name: '西藏',value: Math.round(Math.random()*2000)},
-                                {name: '四川',value: Math.round(Math.random()*2000)},
-                                {name: '宁夏',value: Math.round(Math.random()*2000)},
-                                {name: '海南',value: Math.round(Math.random()*2000)},
-                                {name: '台湾',value: Math.round(Math.random()*2000)},
-                                {name: '香港',value: Math.round(Math.random()*2000)},
-                                {name: '澳门',value: Math.round(Math.random()*2000)}
-                            ]
+                            data:realData
                         }
                     ]
                 };
-                console.log(this.memberChart)
-                console.log(option)
-                this.memberChart.setOption(option);
-            },
-  
-            getCompanyByProvince() {       
-                console.log("getCompanyByProvince")    
-                let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
-                };
-                
-                let ret = ''
-                for (let it in para) {
-                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
-                }
-                this.listLoading = true;
-                // URIEncoding="UTF-8";
-                getCompanyByProvince(ret).then((res) => {
-                    // res = JSON.parse(res)
-                    console.log(res.out_data);
-                    // this.totalcount = this.form.totalcount;
-                    this.listLoading = false; 
-                    this.totalCompany = res.out_data["total"];
-                    console.log(res.data)
-                     
-                     
+                myChart.setOption(option);
+                console.log(333)
                       
                     return ;
                 });
-            }, 
+
+
+            },
             drawCharts() {
                
             },
         },
         mounted() {         
-            this.getMemberByProvince() 
-            this.getCompanyByProvince() 
+
+            this.echartsMapMember();
+            this.echartsMapCompany(); 
         },
         updated: function () {
         },
     }
  
 
-// //     myChart.on('mouseover', function (params) {
-// //         var dataIndex = params.dataIndex;
-// //         // console.log(params);
-// //     });
+
+//     myChart.on('mouseover', function (params) {
+//         var dataIndex = params.dataIndex;
+//         // console.log(params);
+//     });
 
 //     function initEcharts(pName){
 //         var myChart1 = echarts.init(document.getElementById('china-map'));
