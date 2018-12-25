@@ -61,6 +61,12 @@
             <el-radio v-model="radioTotal" label="1">走势图</el-radio>
             <el-radio v-model="radioTotal" label="2">柱状图</el-radio>
             </el-col>
+            <el-col :span="12" v-if="radioTotal==1">
+                <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
+            </el-col>
+            <el-col :span="12" v-else>
+                <div id="chartTotalSecond" style="width:100%; height:400px;"></div>
+            </el-col>
 
         </div>
         <div>
@@ -138,7 +144,9 @@
 <script>
     import util from '../../common/js/util'
     //import NProgress from 'nprogress'
-    import { getIndexContent ,getPayStatus,getMemeberStatus,getEducationStatus,getNationStatus,getGenderStatus} from '../../api/api';
+    import { getIndexContent ,getPayStatus,getMemeberStatus
+        ,getEducationStatus,getNationStatus,getGenderStatus
+        ,getMemberByYear,getMemberByMonth,getMemberByDay} from '../../api/api';
     // import moment from 'moment'
     import echarts from 'echarts'
 
@@ -190,6 +198,8 @@
                 radioNation:"1",
                 radioGender:"1",
 
+                chartTotalFirst: null,
+                chartTotalSecond: null,
                 chartPayFirst: null,
                 chartPaySecond: null,
                 chartMemberFirst: null,
@@ -258,6 +268,163 @@
             selsChange: function (sels) {
                 this.sels = sels;
             },
+            drawColumnTotal() {
+                if(this.defaultType == "year"){
+                    this.queryDataTotalByYear();
+                }
+                else if(this.defaultType == "month"){
+                    this.queryDataTotalByMonth();
+
+                }
+                else{
+                    this.queryDataTotalByDate();
+
+                }
+                
+            },
+            queryDataTotalByYear(){
+                    console.log("getPayStatus")
+                let para = {
+                    Committeeid : 1,
+                    Key : "79ECFB2F3F0C098B",
+                    startYear:"2018",
+                    endYear:"2019", 
+                };
+                
+                let ret = ''
+                for (let it in para) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
+                }
+                this.listLoading = true;
+                // URIEncoding="UTF-8";
+                getMemberByYear(ret).then((res) => {
+                    // res = JSON.parse(res)
+                    console.log(res); 
+                    this.listLoading = false;
+                    console.log(res.out_data);
+                    this.totalMemers = res.out_data.totalcount;  
+                });
+                
+            },
+            queryDataTotalByMonth(){
+                console.log("queryDataTotalByMonth")
+                let para = {
+                    Committeeid : 1,
+                    Key : "79ECFB2F3F0C098B",
+                    startMonth:"2018",
+                    endMonth:"2019", 
+                };
+                
+                let ret = ''
+                for (let it in para) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
+                }
+                this.listLoading = true;
+                // URIEncoding="UTF-8";
+                getMemberByMonth(ret).then((res) => {
+                    // res = JSON.parse(res)
+                    console.log(res);
+                    // this.totalcount = this.form.totalcount;
+                    this.listLoading = false;
+                    console.log(res.out_data);
+                    this.totalMemers = res.out_data.totalcount;   
+                    var newData= [];
+                    var newColumn= [];
+                    for(var i=0;i<res.data.length;i++){
+                        newColumn[i] = res.data[i].yearMonth;
+                        newData[i] = res.data[i].memberCount;
+                    }
+                    if(this.radioTotal=='1'){
+                        this.drawTotalFirst(newColumn,newData);  
+                    }
+                    else{
+                        this.drawTotalSecond(newColumn,newData);  
+                    }
+                });
+                
+            },
+            queryDataTotalByDate(){
+                console.log("queryDataTotalByDate")
+                let para = {
+                    Committeeid : 1,
+                    Key : "79ECFB2F3F0C098B",
+                    startDay:"2018",
+                    endDay:"2019", 
+                };
+                
+                let ret = ''
+                for (let it in para) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
+                }
+                this.listLoading = true;
+                // URIEncoding="UTF-8";
+                getMemberByDay(ret).then((res) => {
+                    // res = JSON.parse(res)
+                    console.log(res);
+                    // this.totalcount = this.form.totalcount;
+                    this.listLoading = false;
+                    console.log(res.out_data);
+                    this.totalMemers = res.out_data.totalMemers;  
+                });
+
+            },
+            drawTotalFirst:function(newColumn,newData){
+                console.log(newColumn)
+                this.chartLine = echarts.init(document.getElementById('chartTotalFirst'));
+                this.chartLine.setOption({
+                    title: {
+                        text: 'Line Chart'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['邮件营销']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: newColumn
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '邮件营销',
+                            type: 'line',
+                            stack: '总量',
+                            data: newData
+                        }, 
+                    ]
+                });
+            },
+
+            drawTotalSecond:function(newColumn,newData){ 
+                console.log(233333333)
+                this.chartTotalSecond = echarts.init(document.getElementById('chartTotalSecond'));
+                    var names = newColumn;
+                    this.chartTotalSecond.setOption({
+                      title: { text: '缴费状态' },
+                      tooltip: {},
+                      xAxis: {
+                          data: names
+                      },
+                      yAxis: {},
+                      series: [{
+                          name: '销量',
+                          type: 'bar',
+                          data: newData
+                        }]
+                    });
+            },
+
             //缴费的－饼状图
             drawColumnPayFirst() {           
                 let para = {
@@ -327,7 +494,7 @@
                     return ;
                 });
             },
-// 缴费柱状图
+            // 缴费柱状图
             drawColumnPaySecond () {
                 let para = {
                     Committeeid : 1,
@@ -373,8 +540,6 @@
                 });                
                 
             },
-
-
 
             //会员－饼状图
             drawColumnMemberFirst() {           
@@ -862,6 +1027,8 @@
 
             drawCharts() {
                 console.log("drawCharts")
+                this.drawColumnTotal() 
+                
                 if(this.radioPay=="1")
                     this.drawColumnPayFirst()
                 else
