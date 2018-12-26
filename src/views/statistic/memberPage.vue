@@ -152,7 +152,28 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     }); 
 
 
@@ -170,7 +191,28 @@
                           name: '会员',
                           type: 'bar',
                           data: [this.totalApplyMemers,this.member_approval, this.member_refuse]
-                        }]
+                        }],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     }); 
                     return ;
                 });

@@ -146,7 +146,28 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     }); 
 
 
@@ -164,7 +185,28 @@
                           name: '职称',
                           type: 'bar',
                           data: this.member_value
-                        }]
+                        }],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     }); 
                     return ;
                 });

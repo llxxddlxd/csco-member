@@ -147,7 +147,28 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     this.chartMemberSecond = echarts.init(document.getElementById('chartMemberSecond'));
                     
@@ -163,7 +184,28 @@
                           name: '单位职务',
                           type: 'bar',
                           data: this.member_value
-                        }]
+                        }],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
