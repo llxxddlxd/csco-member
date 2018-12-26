@@ -67,10 +67,10 @@
             <el-radio v-model="radioTotal" label="1" :change="drawColumnTotal()">会员走势图</el-radio>
             <el-radio v-model="radioTotal" label="2" :change="drawColumnTotal()">会员柱状图</el-radio>
             </el-col>
-            <el-col :span="12" v-if="radioTotal==1">
+            <el-col :span="12" v-show="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioTotal==2">
                 <div id="chartTotalSecond" style="width:100%; height:400px;"></div>
             </el-col>
 
@@ -80,10 +80,10 @@
             <el-radio v-model="radioPay" label="1" :change="changePay()">缴费饼状图</el-radio>
             <el-radio v-model="radioPay" label="2" :change="changePay()">缴费柱状图</el-radio> 
             </el-col>
-            <el-col :span="12" v-if="radioPay==1">
+            <el-col :span="12" v-show="radioPay==1">
                 <div id="chartPayFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioPay==2">
                 <div id="chartPaySecond" style="width:100%; height:400px;"></div>
             </el-col>
         </div>
@@ -92,10 +92,10 @@
             <el-radio v-model="radioMember" label="1" :change="changeMember()">会员饼状图</el-radio>
             <el-radio v-model="radioMember" label="2" :change="changeMember()">会员柱状图</el-radio>
             </el-col>
-            <el-col :span="12" v-if="radioMember==1">
+            <el-col :span="12" v-show="radioMember==1">
                 <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioMember==2">
                 <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
             </el-col>
         </div>
@@ -105,10 +105,10 @@
             <el-radio v-model="radioEducation" label="2" :change="changeEducation()">教育柱状图</el-radio>
             </el-col>
 
-            <el-col :span="12" v-if="radioEducation==1">
+            <el-col :span="12" v-show="radioEducation==1">
                 <div id="chartEducationFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioEducation==2">
                 <div id="chartEducationSecond" style="width:100%; height:400px;"></div>
             </el-col>
         </div>
@@ -117,10 +117,10 @@
             <el-radio v-model="radioNation" label="1" :change="changeNation()">民族饼状图</el-radio>
             <el-radio v-model="radioNation" label="2" :change="changeNation()">民族柱状图</el-radio>
             </el-col>
-            <el-col :span="12" v-if="radioNation==1">
+            <el-col :span="12" v-show="radioNation==1">
                 <div id="chartNationFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioNation==2">
                 <div id="chartNationSecond" style="width:100%; height:400px;"></div>
             </el-col>
         </div>
@@ -129,10 +129,10 @@
             <el-radio v-model="radioGender" label="1" :change="changeGender()">性别饼状图</el-radio>
             <el-radio v-model="radioGender" label="2" :change="changeGender()">性别柱状图</el-radio>
             </el-col>
-            <el-col :span="12" v-if="radioGender==1">
+            <el-col :span="12" v-show="radioGender==1">
                 <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-else>
+            <el-col :span="12" v-show="radioGender==2">
                 <div id="chartGenderSecond" style="width:100%; height:400px;"></div>
             </el-col>
         </el-col > 
@@ -451,7 +451,7 @@
                         data: ['会员统计']
                     },
                     grid: {
-                        left: '3%',
+                        left: '2%',
                         right: '4%',
                         bottom: '3%',
                         containLabel: true
@@ -471,7 +471,28 @@
                             stack: '总量',
                             data: newData
                         }, 
-                    ]
+                    ],
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                 });
             },
 
@@ -482,7 +503,8 @@
                     this.chartTotalSecond.setOption({
                       title: { text: '会员统计' },
                       tooltip: {},
-                      xAxis: {
+                      xAxis: {  
+                          type : 'category',
                           data: names
                       },
                       yAxis: {},
@@ -490,7 +512,29 @@
                           name: '人数',
                           type: 'bar',
                           data: newData
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
+
+                      
                     });
             },
 
@@ -561,7 +605,27 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -600,14 +664,39 @@
                       title: { text: '缴费状态' },
                       tooltip: {},
                       xAxis: {
+                          // show:false,   
                           data: names
                       },
-                      yAxis: {},
+                      yAxis: {
+                           // axisLine:{
+                           //      show:false,         
+                           // },  
+                       },
                       series: [{
                           name: '销量',
                           type: 'bar',
                           data: [this.pay_unPay, this.education_hasPay]
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     }); 
                     return ;
                 });                
@@ -681,7 +770,27 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     return ;
                 });
@@ -721,14 +830,39 @@
                       title: { text: '会员类型' },
                       tooltip: {},
                       xAxis: {
+                          // show:false,   
                           data: names
                       },
-                      yAxis: {},
+                      yAxis: {
+                           // axisLine:{
+                           //      show:false,         
+                           // },  
+                       },
                       series: [{
                           name: '会员类型',
                           type: 'bar',
                           data: [this.member_unPay, this.member_hasPay]
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -804,7 +938,27 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -845,14 +999,39 @@
                       title: { text: '缴费状态' },
                       tooltip: {},
                       xAxis: {
+                          // show:false,   
                           data: names
                       },
-                      yAxis: {},
+                      yAxis: {
+                           // axisLine:{
+                           //      show:false,         
+                           // }, 
+                         },
                       series: [{
                           name: '人数',
                           type: 'bar',
                           data: this.education_data
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -929,7 +1108,27 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -972,14 +1171,39 @@
                       title: { text: '民族状态' },
                       tooltip: {},
                       xAxis: {
+                          // show:false,   
                           data: names
                       },
-                      yAxis: {},
+                      yAxis: {
+                           // axisLine:{
+                           //      show:false,         
+                           // },  
+                       },
                       series: [{
                           name: '人数',
                           type: 'bar',
                           data: this.nation_data
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -1056,7 +1280,27 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;
@@ -1064,7 +1308,7 @@
             },
             // 性别柱状图
             drawColumnGenderSecond () {
-                    console.log("drawColumnGenderSecond")
+                console.log("drawColumnGenderSecond")
                 let para = {
                     Committeeid : global_.Committeeid,
                     Key : global_.key,
@@ -1096,19 +1340,44 @@
                     } 
                     this.chartGenderSecond = echarts.init(document.getElementById('chartGenderSecond'));
                     
-                    var names = ["初级会员", "正式会员"];
+                    // var names = ["初级会员", "正式会员"];
                     this.chartGenderSecond.setOption({
-                      title: { text: '会员' },
+                      title: { text: '性别' },
                       tooltip: {},
-                      xAxis: {
+                      xAxis: { 
+                          // show:false,   
                           data: this.gender_unPay
                       },
-                      yAxis: {},
+                      yAxis: {
+                           // axisLine:{
+                           //      show:false,         
+                           // },  
+                       },
                       series: [{
-                          name: '会员',
+                          name: '性别',
                           type: 'bar',
                           data: this.gender_hasPay
-                        }]
+                        }],
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+
+                    　　　　show:true,
+
+                    　　　　excludeComponents :['toolbox'],
+
+                    　　　　pixelRatio: 2,
+                            title:'保存'
+
+                    　　　　}
+
+                    　　}
+
+                    }
                     });
                     console.log(2222)
                     return ;

@@ -55,7 +55,8 @@ Vue.prototype.dateFormatter = function (str){
     }
 }
  
-
+// import VueJsonp from 'vue-jsonp'
+// Vue.use(VueJsonp)
 
 //router.afterEach(transition => {
 //NProgress.done();
