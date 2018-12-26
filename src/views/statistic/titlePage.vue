@@ -5,15 +5,22 @@
             <span class="demonstration">日期：</span>
             <el-date-picker
               v-model="defaultStartDate"
+               value-format=”yyyy-MM-dd”
               type="date"
+              format="yyyy-MM-dd"
+              @change="queryAgain"
               placeholder="选择日">
             </el-date-picker>
             <span class="demonstration">~</span>
             <el-date-picker
               v-model="defaultEndDate"
+               value-format=”yyyy-MM-dd”
               type="date"
+              format="yyyy-MM-dd"
+              @change="queryAgain"
               placeholder="选择日">
             </el-date-picker>
+             <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
         </div> 
         <div>
             统计会员总数：{{totalMemers}}
@@ -34,8 +41,10 @@
     import util from '../../common/js/util'
     //import NProgress from 'nprogress'
     import { getTitle} from '../../api/api';
+    import global_ from './global'
     // import moment from 'moment'
     import echarts from 'echarts'
+    var now = new Date()
 
     export default {
         data() {
@@ -47,8 +56,8 @@
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
                 
-                defaultStartDate: '',
-                defaultEndDate: '',
+                defaultStartDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365),
+                defaultEndDate: now,
 
                 chartMemberFirst: null,
                 chartMemberSecond: null,
@@ -56,12 +65,10 @@
                 member_data:[],
                 member_value:[],
                 member_column:[], 
+                selectAll:false,
             }
         },
-        methods: { 
-            formatDate: function(row, column){
-                return moment(row.create_time).format("YYYY-MM-DD HH:mm:ss")
-            },
+        methods: {  
             handleCurrentChange(val) {
                 this.page = val;
                 this.getConsume();
@@ -72,10 +79,10 @@
             drawColumnMember() {       
                 console.log("drawColumnMember")    
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -89,7 +96,11 @@
                     console.log(res.out_data);
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
-
+                    if(res.status>0){
+                        // console.log()
+                        this.$message.error(res.desc);
+                        return;
+                    }
                     this.totalMemers = res.out_data['totalcount'];
                     console.log(res.data)
                     for(var i = 0;i<7;i++){
@@ -107,7 +118,7 @@
 
                     this.chartMemberFirst.setOption({
                         title: {
-                            text: '会员类型',
+                            text: '职称',
                             subtext: '',
                             x: 'center'
                         },
@@ -122,7 +133,7 @@
                         },
                         series: [
                             {
-                                name: '会员类型',
+                                name: '职称',
                                 type: 'pie',
                                 radius: '55%',
                                 center: ['50%', '60%'],
@@ -136,37 +147,49 @@
                                 }
                             }
                         ]
-                    });
-                    console.log(2222)
+                    }); 
 
 
                     this.chartMemberSecond = echarts.init(document.getElementById('chartMemberSecond'));
                     
                     var names = this.member_column;
                     this.chartMemberSecond.setOption({
-                      title: { text: '会员' },
+                      title: { text: '职称' },
                       tooltip: {},
                       xAxis: {
                           data: names
                       },
                       yAxis: {},
                       series: [{
-                          name: '会员',
+                          name: '职称',
                           type: 'bar',
                           data: this.member_value
                         }]
-                    });
-                    console.log(2222)
+                    }); 
                     return ;
                 });
             }, 
   
+            queryAgain(){
+                this.selectAll = false;
+                this.drawColumnMember()
 
+            },
+            queryAll(){
+                if(this.selectAll){
+                    this.defaultStartDate = "";
+                    this.defaultEndDate = "";
+                }
+                else{
+
+                }
+                this.drawColumnMember()
+            },
             drawCharts() {
                
             },
         },
-        mounted() {         
+        mounted() {          
             this.drawColumnMember()
         },
         updated: function () {

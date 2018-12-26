@@ -11,18 +11,21 @@
               :change="typeChange">
             </el-option>
         </el-select> 
+        <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
         <div class="yearSpan" v-if="defaultType=='year'">
             <span class="demonstration">日期：</span>
             <el-date-picker
               v-model="defaultStartYear"
               type="year"
-              placeholder="选择年">
+              placeholder="选择年"
+              :change="typeChange">
             </el-date-picker>
             <span class="demonstration">~</span>
             <el-date-picker
               v-model="defaultEndYear"
               type="year"
-              placeholder="选择年">
+              placeholder="选择年"
+              :change="typeChange">
             </el-date-picker>
         </div>
         <div class="monthSpan" v-if="defaultType=='month'">
@@ -36,7 +39,8 @@
             <el-date-picker
               v-model="defaultEndMonth"
               type="month"
-              placeholder="选择月">
+              placeholder="选择月"
+              :change="typeChange">
             </el-date-picker>
         </div>
         <div class="dateSpan" v-if="defaultType=='day'">
@@ -44,13 +48,15 @@
             <el-date-picker
               v-model="defaultStartDate"
               type="date"
-              placeholder="选择日">
+              placeholder="选择日"
+              :change="typeChange">
             </el-date-picker>
             <span class="demonstration">~</span>
             <el-date-picker
               v-model="defaultEndDate"
               type="date"
-              placeholder="选择日">
+              placeholder="选择日"
+              :change="typeChange">
             </el-date-picker>
         </div> 
         <div>
@@ -58,8 +64,8 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioTotal" label="1">走势图</el-radio>
-            <el-radio v-model="radioTotal" label="2">柱状图</el-radio>
+            <el-radio v-model="radioTotal" label="1" :change="drawColumnTotal()">会员走势图</el-radio>
+            <el-radio v-model="radioTotal" label="2" :change="drawColumnTotal()">会员柱状图</el-radio>
             </el-col>
             <el-col :span="12" v-if="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
@@ -71,8 +77,8 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioPay" label="1">饼状图</el-radio>
-            <el-radio v-model="radioPay" label="2">柱状图</el-radio>
+            <el-radio v-model="radioPay" label="1" :change="changePay()">缴费饼状图</el-radio>
+            <el-radio v-model="radioPay" label="2" :change="changePay()">缴费柱状图</el-radio> 
             </el-col>
             <el-col :span="12" v-if="radioPay==1">
                 <div id="chartPayFirst" style="width:100%; height:400px;"></div>
@@ -83,8 +89,8 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioMember" label="1">饼状图</el-radio>
-            <el-radio v-model="radioMember" label="2">柱状图</el-radio>
+            <el-radio v-model="radioMember" label="1" :change="changeMember()">会员饼状图</el-radio>
+            <el-radio v-model="radioMember" label="2" :change="changeMember()">会员柱状图</el-radio>
             </el-col>
             <el-col :span="12" v-if="radioMember==1">
                 <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
@@ -95,8 +101,8 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioEducation" label="1">饼状图</el-radio>
-            <el-radio v-model="radioEducation" label="2">柱状图</el-radio>
+            <el-radio v-model="radioEducation" label="1" :change="changeEducation()">教育饼状图</el-radio>
+            <el-radio v-model="radioEducation" label="2" :change="changeEducation()">教育柱状图</el-radio>
             </el-col>
 
             <el-col :span="12" v-if="radioEducation==1">
@@ -108,8 +114,8 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioNation" label="1">饼状图</el-radio>
-            <el-radio v-model="radioNation" label="2">柱状图</el-radio>
+            <el-radio v-model="radioNation" label="1" :change="changeNation()">民族饼状图</el-radio>
+            <el-radio v-model="radioNation" label="2" :change="changeNation()">民族柱状图</el-radio>
             </el-col>
             <el-col :span="12" v-if="radioNation==1">
                 <div id="chartNationFirst" style="width:100%; height:400px;"></div>
@@ -120,8 +126,8 @@
         </div>
         <el-col >
             <el-col>
-            <el-radio v-model="radioGender" label="1">饼状图</el-radio>
-            <el-radio v-model="radioGender" label="2">柱状图</el-radio>
+            <el-radio v-model="radioGender" label="1" :change="changeGender()">性别饼状图</el-radio>
+            <el-radio v-model="radioGender" label="2" :change="changeGender()">性别柱状图</el-radio>
             </el-col>
             <el-col :span="12" v-if="radioGender==1">
                 <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
@@ -149,7 +155,8 @@
         ,getMemberByYear,getMemberByMonth,getMemberByDay} from '../../api/api';
     // import moment from 'moment'
     import echarts from 'echarts'
-
+    import global_ from './global'
+    var now = new Date()
     export default {
         data() {
             return {
@@ -169,9 +176,7 @@
                     count: '',
                     pay: '',
                     type: '',
-                    create_time: '',
-                    // userModel: '{"id":"0","name":"123","phone":"17628472610"}',
-                    // courseModel: '{"id":"0","title":"123"}'
+                    create_time: '', 
                 },
                 options: [{
                   value: 'year',
@@ -184,12 +189,12 @@
                   label: '按天统计'
                 }],
                 defaultType: 'month',
-                defaultStartYear: '',
-                defaultEndYear: '',
-                defaultStartMonth: '',
-                defaultEndMonth: '',
-                defaultStartDate: '',
-                defaultEndDate: '',
+                defaultStartYear: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365),
+                defaultEndYear: now,
+                defaultStartMonth: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365),
+                defaultEndMonth: now,
+                defaultStartDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365),
+                defaultEndDate: now,
 
                 radioTotal:"1",
                 radioPay:"1",
@@ -221,25 +226,50 @@
                 nation_data:[],
                 gender_unPay:[],
                 gender_hasPay:[],
+                selectAll:false,
             }
         },
         methods: {
             typeChange:function(value){
-                console.log("typeChange,value:"+value)
-                this.drawColumnTotal();
+                console.log("typeChange")
+                if(this.defaultType == "year"){
+                    this.defaultStartDate = this.defaultStartYear;
+                    this.defaultEndDate = this.defaultEndYear; 
+
+                }
+                else if(this.defaultType == "month"){
+                    
+                    this.defaultStartDate = this.defaultStartMonth;
+                    this.defaultEndDate = this.defaultEndMonth; 
+
+                } 
+                this.drawCharts();
             },
-            // detali_userModelPhone: function (value) {
-            //     return value.phone;
-            // },
-            // detali_userModelName: function (value) {
-            //     return value.name;
-            // },
-            // detali_type: function (value) {
-            //     return value == 1 ? '材料' : value == 0 ? '课程' : '未知';
-            // },
-            // detali_courseModelTitle: function (value) {
-            //     return value.title;
-            // },
+            queryAll(){
+                console.log('queryAll')
+                if(this.selectAll){
+
+                    if(this.defaultType == "year"){
+                        this.defaultStartYear = "";
+                        this.defaultEndYear= "";
+                    }
+                    else if(this.defaultType == "month"){
+                        this.defaultStartMonth = "";
+                        this.defaultEndMonth = "";
+
+                    }
+                    else{
+                        this.defaultStartDate = "";
+                        this.defaultEndDate = "";
+
+                    }
+                }
+                else{
+
+                }
+                //改变来时间控件／全选，全部查询
+                this.drawCharts();
+            },
             formatDate: function(row, column){
                 return moment(row.create_time).format("YYYY-MM-DD HH:mm:ss")
             },
@@ -270,6 +300,7 @@
                 this.sels = sels;
             },
             drawColumnTotal() {
+                console.log("drawColumnTotal")
                 if(this.defaultType == "year"){
                     this.queryDataTotalByYear();
                 }
@@ -284,12 +315,12 @@
                 
             },
             queryDataTotalByYear(){
-                    console.log("getPayStatus")
+                console.log("queryDataTotalByYear")
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startYear:"2018",
-                    endYear:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startYear:this.dateFormatter(this.defaultStartYear),
+                    endYear:this.dateFormatter(this.defaultEndYear), 
                 };
                 
                 let ret = ''
@@ -303,6 +334,10 @@
                     console.log(res); 
                     this.listLoading = false;
                     console.log(res.out_data);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     this.totalMemers = res.out_data.totalcount;   
                     var newData= [];
                     var newColumn= [];
@@ -322,10 +357,10 @@
             queryDataTotalByMonth(){
                 console.log("queryDataTotalByMonth")
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startMonth:"2018",
-                    endMonth:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startMonth:this.dateFormatter(this.defaultStartMonth),
+                    endMonth:this.dateFormatter(this.defaultEndMonth), 
                 };
                 
                 let ret = ''
@@ -340,6 +375,10 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.out_data);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     this.totalMemers = res.out_data.totalcount;   
                     var newData= [];
                     var newColumn= [];
@@ -359,10 +398,10 @@
             queryDataTotalByDate(){
                 console.log("queryDataTotalByDate")
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -377,6 +416,10 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.out_data);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
 
                     this.totalMemers = res.out_data.totalcount;   
                     var newData= [];
@@ -399,13 +442,13 @@
                 this.chartLine = echarts.init(document.getElementById('chartTotalFirst'));
                 this.chartLine.setOption({
                     title: {
-                        text: 'Line Chart'
+                        text: '会员统计'
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['邮件营销']
+                        data: ['会员统计']
                     },
                     grid: {
                         left: '3%',
@@ -423,7 +466,7 @@
                     },
                     series: [
                         {
-                            name: '邮件营销',
+                            name: '人数',
                             type: 'line',
                             stack: '总量',
                             data: newData
@@ -437,14 +480,14 @@
                 this.chartTotalSecond = echarts.init(document.getElementById('chartTotalSecond'));
                     var names = newColumn;
                     this.chartTotalSecond.setOption({
-                      title: { text: '缴费状态' },
+                      title: { text: '会员统计' },
                       tooltip: {},
                       xAxis: {
                           data: names
                       },
                       yAxis: {},
                       series: [{
-                          name: '销量',
+                          name: '人数',
                           type: 'bar',
                           data: newData
                         }]
@@ -454,10 +497,10 @@
             //缴费的－饼状图
             drawColumnPayFirst() {           
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -473,6 +516,10 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.outdata);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     this.pay_unPay = res.outdata.unPay;
                     this.pay_hasPay = res.outdata.hasPay;
                     console.log(this.pay_unPay)
@@ -523,10 +570,10 @@
             // 缴费柱状图
             drawColumnPaySecond () {
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -537,14 +584,15 @@
                 // URIEncoding="UTF-8";
                 getPayStatus(ret).then((res) => {
                     console.log("getPayStatus")
-                    // res = JSON.parse(res)
-                    console.log(res);
+                    // res = JSON.parse(res) 
                     // this.totalcount = this.form.totalcount;
-                    this.listLoading = false;
-                    console.log(res.outdata);
+                    this.listLoading = false; 
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     this.pay_unPay = res.outdata.unPay;
-                    this.education_hasPay = res.outdata.hasPay;
-                    console.log(this.pay_unPay)
+                    this.education_hasPay = res.outdata.hasPay; 
                     
                     this.chartPaySecond = echarts.init(document.getElementById('chartPaySecond'));
                     var names = ["未缴费", "已缴费"];
@@ -560,8 +608,7 @@
                           type: 'bar',
                           data: [this.pay_unPay, this.education_hasPay]
                         }]
-                    });
-                    console.log(2222)
+                    }); 
                     return ;
                 });                
                 
@@ -570,10 +617,10 @@
             //会员－饼状图
             drawColumnMemberFirst() {           
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -586,6 +633,10 @@
                     console.log("drawColumnMemberFirst")
                     // res = JSON.parse(res)
                     console.log(res);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.outdata['正式会员']);
@@ -632,18 +683,17 @@
                             }
                         ]
                     });
-                    console.log(2222)
                     return ;
                 });
             },
-// 会员柱状图
+            // 会员柱状图
             drawColumnMemberSecond () {
-                    console.log("drawColumnMemberSecond")
+                console.log("drawColumnMemberSecond")
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -657,7 +707,10 @@
                     console.log(res);
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
-                    console.log(res.outdata);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     this.member_unPay = res.outdata['初级会员'];
                     this.member_hasPay = res.outdata['正式会员'];
                     
@@ -665,14 +718,14 @@
                     
                     var names = ["初级会员", "正式会员"];
                     this.chartMemberSecond.setOption({
-                      title: { text: '会员' },
+                      title: { text: '会员类型' },
                       tooltip: {},
                       xAxis: {
                           data: names
                       },
                       yAxis: {},
                       series: [{
-                          name: '会员',
+                          name: '会员类型',
                           type: 'bar',
                           data: [this.member_unPay, this.member_hasPay]
                         }]
@@ -683,13 +736,13 @@
                 
             },
 
-// 学历饼状图
+            // 学历饼状图
             drawColumnEducationFirst() {           
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -704,6 +757,10 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     // return;
                     for(var i =0;i<7;i++){
                         var tep ={};var temp= [];
@@ -711,9 +768,7 @@
                         tep.name = res.data[i].name;
                         this.education_data[i] = tep;
                         this.education_dataColumn[i] = tep['name'];
-                    }  
-                    console.log(this.education_data)
-                    console.log(this.education_dataColumn)
+                    }   
                     
                      //页面
                     this.chartEducationFirst = echarts.init(document.getElementById('chartEducationFirst'));
@@ -758,10 +813,10 @@
             // 学历柱状图
             drawColumnEducationSecond () {
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -804,13 +859,13 @@
                 });                
                 
             },
-// 民族饼状图
+            // 民族饼状图
             drawColumnNationFirst() {           
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -825,6 +880,10 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     // return;
                     for(var i =0;i<7;i++){
                         var tep ={};var temp= [];
@@ -879,10 +938,10 @@
             // 民族柱状图
             drawColumnNationSecond () {
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -895,14 +954,16 @@
                     console.log("drawColumnNationSecond")
                     // res = JSON.parse(res)
                     console.log(res);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                      for(var i =0;i<7;i++){  
                         this.nation_data[i] = res.data[i].count;
                         this.nation_dataColumn[i] = res.data[i].name;
-                    }  
-                    console.log(this.nation_data)
-                    console.log(this.nation_dataColumn)
+                    }   
                     
                     
                     this.chartNationSecond = echarts.init(document.getElementById('chartNationSecond'));
@@ -931,10 +992,10 @@
             drawColumnGenderFirst() {          
                     console.log("drawColumnGenderFirst") 
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -948,6 +1009,10 @@
                     console.log(res);
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     for(var i=0;i<2;i++){
                         this.gender_unPay[i] = res.data[i].name;
                         var tmp = {};
@@ -955,9 +1020,7 @@
                         tmp.name = res.data[i].name;
                         this.gender_hasPay[i] = tmp;
 
-                    }
-                    console.log(this.gender_unPay);
-                    console.log(this.gender_hasPay)
+                    } 
                      
                      //页面
                     this.chartGenderFirst = echarts.init(document.getElementById('chartGenderFirst'));
@@ -999,14 +1062,14 @@
                     return ;
                 });
             },
-// 性别柱状图
+            // 性别柱状图
             drawColumnGenderSecond () {
                     console.log("drawColumnGenderSecond")
                 let para = {
-                    Committeeid : 1,
-                    Key : "79ECFB2F3F0C098B",
-                    startDay:"2018",
-                    endDay:"2019", 
+                    Committeeid : global_.Committeeid,
+                    Key : global_.key,
+                    startDay:this.dateFormatter(this.defaultStartDate),
+                    endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
                 let ret = ''
@@ -1018,6 +1081,10 @@
                 getGenderStatus(ret).then((res) => {
                     // res = JSON.parse(res)
                     console.log(res);
+                    if(res.status>0){
+                        console.log(res)
+                        return;
+                    }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     console.log(res.outdata);   
@@ -1026,9 +1093,7 @@
                         
                         this.gender_hasPay[i] = res.data[i].count;
 
-                    }
-                    console.log(this.gender_unPay);
-                    console.log(this.gender_hasPay)
+                    } 
                     this.chartGenderSecond = echarts.init(document.getElementById('chartGenderSecond'));
                     
                     var names = ["初级会员", "正式会员"];
@@ -1055,25 +1120,45 @@
                 console.log("drawCharts")
                 this.drawColumnTotal() 
                 
+                this.changePay();
+                this.changeMember();
+                this.changeEducation();
+                this.changeNation();
+                this.changeGender();
+               
+            },
+            changePay(){
+                console.log('changePay')
                 if(this.radioPay=="1")
                     this.drawColumnPayFirst()
                 else
                     this.drawColumnPaySecond() 
-
+            },
+            changeMember(){
+                console.log("changeMember")
                 if(this.radioMember=="1")
                     this.drawColumnMemberFirst()
                 else
                     this.drawColumnMemberSecond() 
+            },
+            changeEducation(){
+                console.log("changeEducation")
 
                 if(this.radioEducation=="1")
                     this.drawColumnEducationFirst()
                 else
                     this.drawColumnEducationSecond() 
+            },
+            changeNation(){
+                console.log("changeNation")
 
                 if(this.radioNation=="1")
                     this.drawColumnNationFirst()
                 else
                     this.drawColumnNationSecond() 
+            },
+            changeGender(){
+                console.log("changeGender")
 
                 if(this.radioGender=="1")
                     this.drawColumnGenderFirst()
@@ -1082,10 +1167,11 @@
             },
         },
         mounted() { 
+            console.log("mounted")
             this.drawCharts();
         },
         updated: function () {
-            this.drawCharts()
+            console.log("updated")
         },
     }
 
