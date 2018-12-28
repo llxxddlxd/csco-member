@@ -76,53 +76,58 @@
 
         </div>
         <div>
-            <el-col>
-            <el-radio v-model="radioPay" label="1" :change="changePay()">缴费饼状图</el-radio>
-            <el-radio v-model="radioPay" label="2" :change="changePay()">缴费柱状图</el-radio> 
-            </el-col>
-            <el-col :span="12" v-show="radioPay==1">
-                <div id="chartPayFirst" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12" v-show="radioPay==2">
-                <div id="chartPaySecond" style="width:100%; height:400px;"></div>
-            </el-col>
+            <div  style="float:left;width:50%;">
+                <el-col>
+                <el-radio v-model="radioPay" label="1" :change="changePay()">缴费饼状图</el-radio>
+                <el-radio v-model="radioPay" label="2" :change="changePay()">缴费柱状图</el-radio> 
+                </el-col>
+                <el-col :span="24" v-show="radioPay==1">
+                    <div id="chartPayFirst" style="width:100%; height:400px;"></div>
+                </el-col>
+                <el-col :span="24" v-show="radioPay==2">
+                    <div id="chartPaySecond" style="width:100%; height:400px;"></div>
+                </el-col>
+            </div>
+            <div  style="float:right;width:45%;">
+                <el-col>
+                <el-radio v-model="radioMember" label="1" :change="changeMember()">会员饼状图</el-radio>
+                <el-radio v-model="radioMember" label="2" :change="changeMember()">会员柱状图</el-radio>
+                </el-col>
+                <el-col :span="24" v-show="radioMember==1">
+                    <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
+                </el-col>
+                <el-col :span="24" v-show="radioMember==2">
+                    <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
+                
+                </el-col>
+            </div>  
         </div>
         <div>
-            <el-col>
-            <el-radio v-model="radioMember" label="1" :change="changeMember()">会员饼状图</el-radio>
-            <el-radio v-model="radioMember" label="2" :change="changeMember()">会员柱状图</el-radio>
-            </el-col>
-            <el-col :span="12" v-show="radioMember==1">
-                <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12" v-show="radioMember==2">
-                <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
-            </el-col>
-        </div>
-        <div>
-            <el-col>
-            <el-radio v-model="radioEducation" label="1" :change="changeEducation()">教育饼状图</el-radio>
-            <el-radio v-model="radioEducation" label="2" :change="changeEducation()">教育柱状图</el-radio>
-            </el-col>
+            <div style="float:left;width:50%;">
+                <el-col>
+                <el-radio v-model="radioEducation" label="1" :change="changeEducation()">教育饼状图</el-radio>
+                <el-radio v-model="radioEducation" label="2" :change="changeEducation()">教育柱状图</el-radio>
+                </el-col>
 
-            <el-col :span="12" v-show="radioEducation==1">
-                <div id="chartEducationFirst" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12" v-show="radioEducation==2">
-                <div id="chartEducationSecond" style="width:100%; height:400px;"></div>
-            </el-col>
-        </div>
-        <div>
-            <el-col>
-            <el-radio v-model="radioNation" label="1" :change="changeNation()">民族饼状图</el-radio>
-            <el-radio v-model="radioNation" label="2" :change="changeNation()">民族柱状图</el-radio>
-            </el-col>
-            <el-col :span="12" v-show="radioNation==1">
-                <div id="chartNationFirst" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12" v-show="radioNation==2">
-                <div id="chartNationSecond" style="width:100%; height:400px;"></div>
-            </el-col>
+                <el-col :span="24" v-show="radioEducation==1">
+                    <div id="chartEducationFirst" style="width:100%; height:400px;"></div>
+                </el-col>
+                <el-col :span="24" v-show="radioEducation==2">
+                    <div id="chartEducationSecond" style="width:100%; height:400px;"></div>
+                </el-col>
+            </div>
+            <div style="float:right;width:45%;">
+                <el-col>
+                <el-radio v-model="radioNation" label="1" :change="changeNation()">民族饼状图</el-radio>
+                <el-radio v-model="radioNation" label="2" :change="changeNation()">民族柱状图</el-radio>
+                </el-col>
+                <el-col :span="24" v-show="radioNation==1">
+                    <div id="chartNationFirst" style="width:100%; height:400px;"></div>
+                </el-col>
+                <el-col :span="24" v-show="radioNation==2">
+                    <div id="chartNationSecond" style="width:100%; height:400px;"></div>
+                </el-col>
+            </div>
         </div>
         <el-col >
             <el-col>
