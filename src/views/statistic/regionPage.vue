@@ -144,6 +144,7 @@
                     // console.log(res.data) 
                     var realData =[];
                     let j = 0;
+
                     // for (var i = 0;i<=10; i++) {
                     for (var i = 0;i<=res.data.length - 1; i++) {
                         // console.log(res.data[i])
@@ -153,8 +154,20 @@
                             temp.value=res.data[i].count;
                             var name = res.data[i].name;
                             temp.name=name.replace("省","");
+
+                            var cityArray = res.data[i].cityArray;
+                            for(var value in cityArray){
+                                for(var one in cityArray[value]){
+                                    console.log(one) 
+                                    if(one=='不详'){ //如果等于不详，减去所占数据
+                                        temp.value =temp.value- parseInt(cityArray[value][one])
+
+                                    }
+                                }
+                            }
                             realData[j]= temp;
                             j++;
+                            
                             if(res.data[i].name == "北京"){
                                 _this.memberTableData= [];
                                 let memberTableData= new Array();
@@ -163,10 +176,12 @@
                                 for(var value in cityArray){
                                     for(var one in cityArray[value]){
                                         console.log(one)
-                                        var temp ={};
-                                        temp.count =cityArray[value][one]; 
-                                        temp.city =one;  
-                                        memberTableData.push(temp);
+                                        var temp2 ={};
+                                        if(one!='不详'){
+                                            temp2.count =cityArray[value][one]; 
+                                            temp2.city =one;  
+                                            memberTableData.push(temp2);
+                                        } 
                                     }
                                 }
                                 _this.memberTableData= memberTableData ;   
@@ -174,6 +189,8 @@
 
                         }
                     }  
+console.log(realData)
+
                     let myChart = echarts.init(this.$refs.myEchart); //这里是为了获得容器所在位置   
                     myChart.on('click', function (param) {
                         // alert(param.name);
@@ -189,9 +206,15 @@
                                     for(var one in cityArray[value]){
                                         console.log(one)
                                         var temp ={};
-                                        temp.count =cityArray[value][one]; 
-                                        temp.city =one;  
-                                        memberTableData.push(temp);
+                                        if(one!='不详'){
+                                            temp.count =cityArray[value][one]; 
+                                            temp.city =one;  
+                                            memberTableData.push(temp);
+                                        }
+                                        else{ 
+                                            realData[j-1].value =realData[j-1].value- parseInt(cityArray[value][one])
+
+                                        }
                                     }
                                 }
                                 _this.memberTableData= memberTableData ;  
@@ -329,7 +352,18 @@
                             temp.value=res.data[i].count;
                             var name = res.data[i].name;
                             temp.name=name.replace("省","");
+                             var cityArray = res.data[i].cityArray;
+                            for(var value in cityArray){
+                                for(var one in cityArray[value]){
+                                    console.log(one) 
+                                    if(one=='不详'){ //如果等于不详，减去所占数据
+                                        temp.value =temp.value- parseInt(cityArray[value][one])
+
+                                    }
+                                }
+                            }
                             realData[j]= temp;
+
                             j++;
                             if(res.data[i].name == "北京"){
                                 _this.memberTableData= [];
@@ -340,14 +374,19 @@
                                     console.log(value);
                                     for(var one in cityArray[value]){
                                         console.log(one)
-                                        var temp ={};
-                                        temp.count =cityArray[value][one]; 
-                                        temp.city =one; 
-                                        memberTableData.push(temp);
+                                        var temp2 ={};
+                                        if(one!='不详'){
+                                            temp2.count =cityArray[value][one]; 
+                                            temp2.city =one;  
+                                            memberTableData.push(temp2);
+                                        }  
                                     }
                                 }
                                 _this.companyTableData= memberTableData ; 
                             }
+
+ 
+
                         }
                     }
                      
@@ -366,15 +405,23 @@
                                     console.log(value);
                                     for(var one in cityArray[value]){
                                         console.log(one)
-                                        var temp ={};
-                                        temp.count =cityArray[value][one]; 
-                                        temp.city =one; 
-                                        memberTableData.push(temp);
+                                        var temp ={}; 
+                                        if(one!='不详'){
+                                            temp.count =cityArray[value][one]; 
+                                            temp.city =one;  
+                                            memberTableData.push(temp);
+                                        }
+                                        else{ 
+                                            realData[j-1].value =realData[j-1].value- parseInt(cityArray[value][one])
+
+                                        }
                                     }
                                 }
-                                _this.companyTableData= memberTableData ; 
-                                console.log(_this.companyTableData );
+                                _this.companyTableData= memberTableData ;  
                                 break;
+
+
+ 
                             }
                         } 
                 });

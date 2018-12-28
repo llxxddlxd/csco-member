@@ -1,7 +1,7 @@
 <script>
 const Committeeid=1;
 const key='79ECFB2F3F0C098B'; 
-const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue'];
+const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue','purple','yellow','pink'];
   export default
   {
     Committeeid, 
@@ -60,12 +60,14 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue']
 
             }
         }
+        console.log(member_column)
+        console.log(member_column_bak2)
 
         if(member_column_bak2.length>0){
             //已经返回其他了               合并三个数组
             
         }
-        else{
+        else{ 
             //把最后一个替换为其他  合并另外两个数组，最后加上  其他
             member_column_bak2[0] = "其他";
             member_value_bak2[0] = "20";//this.totalMemers - tempcount;
@@ -79,6 +81,7 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue']
             member_data.pop();
 
         } 
+        console.log(member_column)
         member_column = member_column.concat(member_column_bak,member_column_bak2)
         member_value = member_value.concat(member_value_bak,member_value_bak2)
 
@@ -92,6 +95,7 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue']
         ret['member_column']=member_column;
         ret['member_value']=member_value;
         ret['member_data']=member_data;
+        console.log(member_data)
 
         return ret;
 

@@ -101,15 +101,12 @@
                         return;
                     }
                     this.totalMemers = res.out_data['totalcount'];
-                    console.log(res.data)
-                    for(var i = 0;i<7;i++){
-                        this.member_column[i] = res.data[i].name;
-                        this.member_value[i] = res.data[i].count;
-                        var temp ={};
-                        temp.value=res.data[i].count
-                        temp.name=res.data[i].name
-                        this.member_data[i] = temp;
-                    }
+                  
+                 
+                    let temp = global_.operatorData(res.data,this.totalMemers);
+                    this.member_data=temp['member_data'];
+                    this.member_column=temp['member_column'];
+                    this.member_value=temp['member_value']; 
                      
                      //页面
                     this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));

@@ -67,10 +67,10 @@
             <el-radio v-model="radioTotal" label="1" :change="drawColumnTotal()">会员走势图</el-radio>
             <el-radio v-model="radioTotal" label="2" :change="drawColumnTotal()">会员柱状图</el-radio>
             </el-col>
-            <el-col :span="12" v-show="radioTotal==1">
+            <el-col :span="22" v-show="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12" v-show="radioTotal==2">
+            <el-col :span="21" v-show="radioTotal==2">
                 <div id="chartTotalSecond" style="width:100%; height:400px;"></div>
             </el-col>
 
@@ -331,7 +331,7 @@
                     this.listLoading = false;
                     console.log(res.out_data);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("会员数"+res.desc);
                         return;
                     }
                     this.totalMemers = res.out_data.totalcount;   
@@ -372,7 +372,7 @@
                     this.listLoading = false;
                     console.log(res.out_data);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("会员数"+res.desc);
                         return;
                     }
                     this.totalMemers = res.out_data.totalcount;   
@@ -413,7 +413,7 @@
                     this.listLoading = false;
                     console.log(res.out_data);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("会员数"+res.desc);
                         return;
                     }
 
@@ -484,8 +484,7 @@
                 });
             },
 
-            drawTotalSecond:function(newColumn,newData){ 
-                console.log(233333333)
+            drawTotalSecond:function(newColumn,newData){  
                 this.chartTotalSecond = echarts.init(document.getElementById('chartTotalSecond'));
                     var names = newColumn;
                     this.chartTotalSecond.setOption({
@@ -555,7 +554,7 @@
                     this.listLoading = false;
                     console.log(res.outdata);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("缴费"+res.desc);
                         return;
                     }
                     this.pay_unPay = res.outdata.unPay;
@@ -648,7 +647,7 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("缴费"+res.desc);
                         return;
                     }
                     this.pay_unPay = res.outdata.unPay;
@@ -731,7 +730,7 @@
                     // res = JSON.parse(res)
                     console.log(res);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("会员"+res.desc);
                         return;
                     }
                     // this.totalcount = this.form.totalcount;
@@ -827,7 +826,7 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("会员"+res.desc);
                         return;
                     }
                     this.member_unPay = res.outdata['初级会员'];
@@ -914,7 +913,7 @@
                     this.listLoading = false;
                     console.log(res);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("学历"+res.desc);
                         return;
                     }
                     // return;
@@ -1005,8 +1004,11 @@
                 // URIEncoding="UTF-8";
                 getEducationStatus(ret).then((res) => {
                     console.log("drawColumnEducationSecond")
-                    // res = JSON.parse(res)
-                    console.log(res);
+                    // res = JSON.parse(res) 
+                    if(res.status>0){
+                        this.$message.error("学历"+res.desc);
+                        return;
+                    }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
                      for(var i =0;i<7;i++){  
@@ -1096,7 +1098,7 @@
                     this.listLoading = false;
                     console.log(res);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("民族"+res.desc);
                         return;
                     }
                     // return;
@@ -1192,7 +1194,7 @@
                     // res = JSON.parse(res)
                     console.log(res);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("民族"+res.desc);
                         return;
                     }
                     // this.totalcount = this.form.totalcount;
@@ -1284,7 +1286,7 @@
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("性别"+res.desc);
                         return;
                     }
                     for(var i=0;i<2;i++){
@@ -1378,7 +1380,7 @@
                     // res = JSON.parse(res)
                     console.log(res);
                     if(res.status>0){
-                        console.log(res)
+                        this.$message.error("性别"+res.desc);
                         return;
                     }
                     // this.totalcount = this.form.totalcount;
