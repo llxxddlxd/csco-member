@@ -111,6 +111,7 @@
                         temp.name=res.data[i].name
                         this.member_data[i] = temp;
                     }
+ 
                      
                      //页面
                     this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));
@@ -147,6 +148,7 @@
                                 }
                             }
                         ],
+                    color:global_.colorSelect,
 
                     toolbox: {
 
@@ -161,7 +163,7 @@
                     　　　　excludeComponents :['toolbox'],
 
                     　　　　pixelRatio: 2,
-                            title:'保存'
+                            title:'下载'
 
                     　　　　}
 
@@ -184,7 +186,19 @@
                       series: [{
                           name: '职称',
                           type: 'bar',
-                          data: this.member_value
+                          data: this.member_value,
+                        itemStyle: {
+                                    normal: {
+                　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                        color: function(params) {
+                                            // build a color map as your need.
+                                            var colorList = global_.colorSelect;
+                                            return colorList[params.dataIndex]
+
+                                        },             
+
+                                    }
+                                },
                         }],
 
                     toolbox: {
@@ -200,7 +214,7 @@
                     　　　　excludeComponents :['toolbox'],
 
                     　　　　pixelRatio: 2,
-                            title:'保存'
+                            title:'下载'
 
                     　　　　}
 

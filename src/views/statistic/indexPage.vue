@@ -237,8 +237,7 @@
                     this.defaultEndDate = this.defaultEndYear; 
 
                 }
-                else if(this.defaultType == "month"){
-                    
+                else if(this.defaultType == "month"){                    
                     this.defaultStartDate = this.defaultStartMonth;
                     this.defaultEndDate = this.defaultEndMonth; 
 
@@ -248,7 +247,6 @@
             queryAll(){
                 console.log('queryAll')
                 if(this.selectAll){
-
                     if(this.defaultType == "year"){
                         this.defaultStartYear = "";
                         this.defaultEndYear= "";
@@ -261,7 +259,6 @@
                     else{
                         this.defaultStartDate = "";
                         this.defaultEndDate = "";
-
                     }
                 }
                 else{
@@ -331,7 +328,6 @@
                 // URIEncoding="UTF-8";
                 getMemberByYear(ret).then((res) => {
                     // res = JSON.parse(res)
-                    console.log(res); 
                     this.listLoading = false;
                     console.log(res.out_data);
                     if(res.status>0){
@@ -472,22 +468,14 @@
                             data: newData
                         }, 
                     ],
-
                     toolbox: {
-
                     　　show: true,
-
                     　　feature: {
-
                     　　　　saveAsImage: {
-
                     　　　　show:true,
-
                     　　　　excludeComponents :['toolbox'],
-
                     　　　　pixelRatio: 2,
-                            title:'保存'
-
+                            title:'下载'
                     　　　　}
 
                     　　}
@@ -511,28 +499,34 @@
                       series: [{
                           name: '人数',
                           type: 'bar',
-                          data: newData
+                          data: newData,
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
+                        　　show: true,
+                        　　feature: {
 
-                    　　show: true,
+                        　　　　saveAsImage: {
+                        　　　　show:true,
+                        　　　　excludeComponents :['toolbox'],
+                        　　　　pixelRatio: 2,
+                                title:'下载'
+                        　　　　}
 
-                    　　feature: {
+                        　　}
 
-                    　　　　saveAsImage: {
-
-                    　　　　show:true,
-
-                    　　　　excludeComponents :['toolbox'],
-
-                    　　　　pixelRatio: 2,
-                            title:'保存'
-
-                    　　　　}
-
-                    　　}
-
-                    }
+                        }
 
                       
                     });
@@ -606,26 +600,28 @@
                                 }
                             }
                         ],
-                    toolbox: {
+                        color:global_.colorSelect,
 
-                    　　show: true,
+                        toolbox: {
 
-                    　　feature: {
+                        　　show: true,
 
-                    　　　　saveAsImage: {
+                        　　feature: {
 
-                    　　　　show:true,
+                        　　　　saveAsImage: {
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　show:true,
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　}
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　}
+                        　　　　}
 
-                    }
+                        　　}
+
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -675,28 +671,40 @@
                       series: [{
                           name: '销量',
                           type: 'bar',
-                          data: [this.pay_unPay, this.education_hasPay]
+                          data: [this.pay_unPay, this.education_hasPay],
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     }); 
                     return ;
                 });                
@@ -771,26 +779,28 @@
                                 }
                             }
                         ],
-                    toolbox: {
+                        color:global_.colorSelect,
 
-                    　　show: true,
+                        toolbox: {
 
-                    　　feature: {
+                        　　show: true,
 
-                    　　　　saveAsImage: {
+                        　　feature: {
 
-                    　　　　show:true,
+                        　　　　saveAsImage: {
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　show:true,
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　}
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　}
+                        　　　　}
 
-                    }
+                        　　}
+
+                        }
                     });
                     return ;
                 });
@@ -841,28 +851,40 @@
                       series: [{
                           name: '会员类型',
                           type: 'bar',
-                          data: [this.member_unPay, this.member_hasPay]
+                          data: [this.member_unPay, this.member_hasPay],
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -939,26 +961,28 @@
                                 }
                             }
                         ],
-                    toolbox: {
+                        color:global_.colorSelect,
 
-                    　　show: true,
+                        toolbox: {
 
-                    　　feature: {
+                        　　show: true,
 
-                    　　　　saveAsImage: {
+                        　　feature: {
 
-                    　　　　show:true,
+                        　　　　saveAsImage: {
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　show:true,
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　}
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　}
+                        　　　　}
 
-                    }
+                        　　}
+
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -1010,28 +1034,40 @@
                       series: [{
                           name: '人数',
                           type: 'bar',
-                          data: this.education_data
+                          data: this.education_data,
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -1109,26 +1145,28 @@
                                 }
                             }
                         ],
-                    toolbox: {
+                        color:global_.colorSelect,
 
-                    　　show: true,
+                        toolbox: {
 
-                    　　feature: {
+                        　　show: true,
 
-                    　　　　saveAsImage: {
+                        　　feature: {
 
-                    　　　　show:true,
+                        　　　　saveAsImage: {
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　show:true,
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　}
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　}
+                        　　　　}
 
-                    }
+                        　　}
+
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -1182,28 +1220,40 @@
                       series: [{
                           name: '人数',
                           type: 'bar',
-                          data: this.nation_data
+                          data: this.nation_data,
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -1281,26 +1331,28 @@
                                 }
                             }
                         ],
-                    toolbox: {
+                        color:global_.colorSelect,
 
-                    　　show: true,
+                        toolbox: {
 
-                    　　feature: {
+                        　　show: true,
 
-                    　　　　saveAsImage: {
+                        　　feature: {
 
-                    　　　　show:true,
+                        　　　　saveAsImage: {
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　show:true,
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　}
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　}
+                        　　　　}
 
-                    }
+                        　　}
+
+                        }
                     });
                     console.log(2222)
                     return ;
@@ -1356,28 +1408,40 @@
                       series: [{
                           name: '性别',
                           type: 'bar',
-                          data: this.gender_hasPay
+                          data: this.gender_hasPay,
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
                         }],
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     });
                     console.log(2222)
                     return ;

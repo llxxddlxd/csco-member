@@ -155,6 +155,22 @@
                             temp.name=name.replace("省","");
                             realData[j]= temp;
                             j++;
+                            if(res.data[i].name == "北京"){
+                                _this.memberTableData= [];
+                                let memberTableData= new Array();
+                                console.log(_this.memberTableData ); 
+                                var cityArray = res.data[i].cityArray;
+                                for(var value in cityArray){
+                                    for(var one in cityArray[value]){
+                                        console.log(one)
+                                        var temp ={};
+                                        temp.count =cityArray[value][one]; 
+                                        temp.city =one;  
+                                        memberTableData.push(temp);
+                                    }
+                                }
+                                _this.memberTableData= memberTableData ;   
+                            }
 
                         }
                     }  
@@ -315,6 +331,23 @@
                             temp.name=name.replace("省","");
                             realData[j]= temp;
                             j++;
+                            if(res.data[i].name == "北京"){
+                                _this.memberTableData= [];
+                                let memberTableData= new Array();
+                                console.log(_this.memberTableData ); 
+                                var cityArray = res.data[i].cityArray; 
+                                for(var value in cityArray){
+                                    console.log(value);
+                                    for(var one in cityArray[value]){
+                                        console.log(one)
+                                        var temp ={};
+                                        temp.count =cityArray[value][one]; 
+                                        temp.city =one; 
+                                        memberTableData.push(temp);
+                                    }
+                                }
+                                _this.companyTableData= memberTableData ; 
+                            }
                         }
                     }
                      

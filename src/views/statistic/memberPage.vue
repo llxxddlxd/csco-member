@@ -153,6 +153,7 @@
                                 }
                             }
                         ],
+                    color:global_.colorSelect,
 
                     toolbox: {
 
@@ -167,7 +168,7 @@
                     　　　　excludeComponents :['toolbox'],
 
                     　　　　pixelRatio: 2,
-                            title:'保存'
+                            title:'下载'
 
                     　　　　}
 
@@ -190,8 +191,20 @@
                       series: [{
                           name: '会员',
                           type: 'bar',
-                          data: [this.totalApplyMemers,this.member_approval, this.member_refuse]
-                        }],
+                          data: [this.totalApplyMemers,this.member_approval, this.member_refuse],
+                              itemStyle: {
+                                    normal: {
+                　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                        color: function(params) {
+                                            // build a color map as your need.
+                                            var colorList = global_.colorSelect;
+                                            return colorList[params.dataIndex]
+
+                                        },             
+
+                                    }
+                                },
+                            }],
 
                     toolbox: {
 
@@ -206,7 +219,7 @@
                     　　　　excludeComponents :['toolbox'],
 
                     　　　　pixelRatio: 2,
-                            title:'保存'
+                            title:'下载'
 
                     　　　　}
 

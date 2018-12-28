@@ -27,13 +27,9 @@
         </div>
        
         <div> 
-            <div id="chartMemberFirst" style="width:100%; height:400px;"></div> 
-            
-            <div id="chartMemberSecond" style="width:100%; height:400px;"></div>      
-         
-       
+            <div id="chartMemberFirst" style="width:100%; height:400px;"></div>             
+            <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
         </div> 
-
     </section>
 </template>
 
@@ -63,10 +59,18 @@
 
                 chartMemberFirst: null,
                 chartMemberSecond: null,
-               
-                member_data:[],
+                //有效数据
+                member_data:[],  
                 member_value:[],
                 member_column:[], 
+                // //无+不详数据
+                // member_data_bak:[],
+                // member_value_bak:[],
+                // member_column_bak:[], 
+                // //其他数据
+                // member_data_bak2:[],
+                // member_value_bak2:[],
+                // member_column_bak2:[], 
                 selectAll:false,
             }
         },
@@ -102,21 +106,17 @@
                         // console.log()
                         this.$message.error("单位职务"+res.desc);
                         return;
-                    }
+                    } 
                     this.totalMemers = res.out_data['totalcount']; 
-                    for(var i = 0;i<7;i++){
-                        this.member_column[i] = res.data[i].name;
-                        this.member_value[i] = res.data[i].count;
-                        var temp ={};
-                        temp.value=res.data[i].count
-                        temp.name=res.data[i].name
-                        this.member_data[i] = temp;
-                    }
-                     
+                    let temp = global_.operatorData(res.data,this.totalMemers);
+                    this.member_data=temp['member_data'];
+                    this.member_column=temp['member_column'];
+                    this.member_value=temp['member_value']; 
+ 
+                     // return
                      //页面
                     this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));
                     //请求
-
                     this.chartMemberFirst.setOption({
                         title: {
                             text: '单位职务',
@@ -148,66 +148,79 @@
                                 }
                             }
                         ],
+                        color:global_.colorSelect,
 
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
+                        　　　　saveAsImage: {
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
-                    });
+                        }
+                    }); 
+                    //second
                     this.chartMemberSecond = echarts.init(document.getElementById('chartMemberSecond'));
                     
                     var names = this.member_column;
                     this.chartMemberSecond.setOption({
-                      title: { text: '单位职务' },
-                      tooltip: {},
-                      xAxis: {
-                          data: names
-                      },
-                      yAxis: {},
-                      series: [{
-                          name: '单位职务',
-                          type: 'bar',
-                          data: this.member_value
-                        }],
+                        title: { text: '单位职务' },
+                            toolboxoltip: {},
+                            xAxis: {
+                              data: names
+                            },
+                            yAxis: {},
+                            series: [{
+                              name: '单位职务',
+                              type: 'bar',
+                              data: this.member_value,
+                              itemStyle: {
+                                    normal: {
+                　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                        color: function(params) {
+                                            // build a color map as your need.
+                                            var colorList = global_.colorSelect;
+                                            return colorList[params.dataIndex]
 
-                    toolbox: {
+                                        },             
 
-                    　　show: true,
+                                    }
+                                },
+                            }],
 
-                    　　feature: {
+                            toolbox: {
 
-                    　　　　saveAsImage: {
+                            　　show: true,
 
-                    　　　　show:true,
+                            　　feature: {
 
-                    　　　　excludeComponents :['toolbox'],
+                            　　　　saveAsImage: {
 
-                    　　　　pixelRatio: 2,
-                            title:'保存'
+                            　　　　show:true,
 
-                    　　　　}
+                            　　　　excludeComponents :['toolbox'],
 
-                    　　}
+                            　　　　pixelRatio: 2,
+                                    title:'下载'
 
-                    }
-                    });
-                    console.log(2222)
+                            　　　　}
+
+                        　　}
+
+                        }
+                    }); 
                     return ;
                 });
             }, 
