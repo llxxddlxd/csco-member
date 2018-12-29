@@ -38,7 +38,10 @@ router.beforeEach((to, from, next) => {
 })
 
 //默认返回yyyy-MM-dd HH-mm-ss
-Vue.prototype.dateFormatter = function (str){
+Vue.prototype.dateFormatter = function (str,type=''){
+    if(!str){
+      return '';
+    }
     
     var hasTime = arguments[1] != false ? true : false;//可传第二个参数false，返回yyyy-MM-dd
     var d = new Date(str);
@@ -48,10 +51,14 @@ Vue.prototype.dateFormatter = function (str){
     var hour = d.getHours()<10 ? '0'+d.getHours() : d.getHours();
     var minute = d.getMinutes()<10 ? '0'+d.getMinutes() : d.getMinutes();
     var second = d.getSeconds()<10 ? '0'+d.getSeconds() : d.getSeconds();
-    if(hasTime){
+    if(type=='year'){
+        return [year].join('-');
+    }else if(type=='month'){
+        return [year, month].join('-');
+    }
+    else{
         return [year, month, day].join('-') + " " + [hour, minute, second].join(':');
-    }else{
-        return [year, month, day].join('-');
+
     }
 }
  

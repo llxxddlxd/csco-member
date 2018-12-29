@@ -9,6 +9,7 @@
               type="date"
               format="yyyy-MM-dd"
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
             <span class="demonstration">~</span>
@@ -18,6 +19,7 @@
               type="date"
               format="yyyy-MM-dd"
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
@@ -27,23 +29,31 @@
             统计理事总数：{{totalCompany}}
         </div> 
         <div class="echarts">
-            <div :style="{height:'400px',width:'80%'}" ref="myEchart"></div>
-            <el-table  :data="memberTableData" style="width: 100%">
-              <el-table-column  prop="city" label="地区" width="180">
-              </el-table-column>
-              <el-table-column  prop="count" label="会员人数" width="180">
-              </el-table-column> 
-            </el-table>
+            <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchart"></div>
+            <div style="float:right;">
+                <i class="fa fa-download" @click="download(1)"></i>
+
+                <el-table  :data="memberTableData" style="width: 100%" id="memberId">
+                  <el-table-column  prop="city" label="地区" width="180">
+                  </el-table-column>
+                  <el-table-column  prop="count" label="会员人数" width="180">
+                  </el-table-column> 
+                </el-table>
+            </div>
         </div>
  
         <div class="echarts">
-            <div :style="{height:'400px',width:'80%'}" ref="myEchartCompany"></div>
-            <el-table  :data="companyTableData" style="width: 100%">
-              <el-table-column  prop="city" label="地区" width="180">
-              </el-table-column>
-              <el-table-column  prop="count" label="理事人数" width="180">
-              </el-table-column> 
-            </el-table>
+            <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchartCompany"></div>
+            <!-- <i class="el-icon-delete"></i> -->
+            <div style="float:right;">
+                <i class="fa fa-download" @click="download(2)"></i>
+                <el-table  :data="companyTableData" style="width: 100%" id="companyId">
+                  <el-table-column  prop="city" label="地区" width="180">
+                  </el-table-column>
+                  <el-table-column  prop="count" label="理事单位" width="180">
+                  </el-table-column> 
+                </el-table>
+            </div>
         </div> 
     </section>
    
@@ -59,7 +69,9 @@
     // import moment from 'moment'
     import echarts from 'echarts'
     import global_ from './global'
-    let  defaultNow =new Date()
+    import FileSaver from 'file-saver'
+    import XLSX from 'xlsx'
+    let  now =new Date()
     var _this = {} 
     export default {
  
@@ -80,28 +92,62 @@
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
                 selectAll:false,
-                defaultStartDate: new Date(defaultNow.getTime() - 1000 * 60 * 60 * 24 * 365),
-                defaultEndDate: defaultNow,
+                defaultStartDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365),
+                defaultEndDate: now,
+                selectTime:1,
 
             }
         },
         methods: {  
-            queryAgain(){
-                console.log("queryAgain")
-                // this.selectAll = false;
-                this.echartsMapMember();
-                this.echartsMapCompany(); 
+            download:function(value){
+                if(value==1){
+                    this.exportExcel("#memberId","会员.xlsx")
+                }
+                else{
+                    this.exportExcel("#companyId","理事.xlsx")
 
+                }
+            } ,
+            exportExcel (value,name) {
+                 /* generate workbook object from table */
+                 var wb = XLSX.utils.table_to_book(document.querySelector(value))
+                 /* get binary string as output */
+                 var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+                 try {
+                     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), name)
+                 } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+                 return wbout
+             }, 
+
+
+            queryAgain(){
+                if(this.defaultStartDate>this.defaultEndDate){
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now; 
+                    return;
+                } 
+                if(this.selectTime==1){
+                    this.selectAll=false; 
+                    this.echartsMapMember();
+                    this.echartsMapCompany(); 
+                }            
             },
-            queryAll(){
-                console.log("queryAll")
+            clickAgain(){ 
+                 this.selectTime=1;
+            },
+
+ 
+            queryAll(){ 
                 if(this.selectAll){
+                    this.selectTime=0;
                     this.defaultStartDate = "";
                     this.defaultEndDate = "";
                 }
                 else{
-
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now;
                 }
+
                 this.echartsMapMember();
                 this.echartsMapCompany(); 
             },
@@ -514,11 +560,11 @@ console.log(realData)
                
             },
         },
-        mounted() {         
+        mounted() {          
             console.log("mounted")
             console.log(this.defaultStartDate)
             this.echartsMapMember();
-            this.echartsMapCompany(); 
+            this.echartsMapCompany();  
         },
         updated: function () {
         },

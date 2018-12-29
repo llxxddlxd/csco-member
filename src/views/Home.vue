@@ -5,9 +5,9 @@
 				{{collapsed?'':sysName}}
 			</el-col>
 			<el-col :span="10">
-				<div class="tools" @click.prevent="collapse">
+		<!-- 		<div class="tools" @click.prevent="collapse">
 					<i class="fa fa-align-justify"></i>
-				</div>
+				</div> -->
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
@@ -51,8 +51,8 @@
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" class="breadcrumb-container">
-						<strong class="title">{{$route.name}}</strong>
-						<el-breadcrumb separator="/" class="breadcrumb-inner">
+						<!-- <strong class="title">{{$route.name}}</strong> -->
+						<el-breadcrumb separator="	/" class="breadcrumb-inner">
 							<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
 								{{ item.name }}
 							</el-breadcrumb-item>
@@ -74,7 +74,7 @@
 	export default {
 		data() {
 			return {
-				sysName:'VUEADMIN',
+				sysName:'会员数据统计系统',
 				collapsed:false,
 				sysUserName: '',
 				sysUserAvatar: '',
@@ -255,7 +255,8 @@
 						color: #475669;
 					}
 					.breadcrumb-inner {
-						float: right;
+						margin-bottom:10px
+						//float: right;
 					}
 				}
 				.content-wrapper {

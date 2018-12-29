@@ -9,6 +9,7 @@
               type="date"
               format="yyyy-MM-dd"
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
             <span class="demonstration">~</span>
@@ -18,6 +19,7 @@
               type="date"
               format="yyyy-MM-dd"
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
@@ -72,6 +74,7 @@
                 // member_value_bak2:[],
                 // member_column_bak2:[], 
                 selectAll:false,
+                selectTime:1,
             }
         },
         methods: { 
@@ -226,17 +229,30 @@
             }, 
   
             queryAgain(){
-                this.selectAll = false;
-                this.drawColumnMember()
-
+                if(this.defaultStartDate>this.defaultEndDate){
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now; 
+                    return;
+                } 
+                if(this.selectTime==1){
+                    this.selectAll=false;
+                    this.drawColumnMember()  
+                }            
             },
-            queryAll(){
-                if(this.selectAll){
-                    this.defaultStartDate = "";
+            clickAgain(){ 
+                 this.selectTime=1;
+            },
+            queryAll(){ 
+                if(this.selectAll==true){
+                    this.selectTime=0;
+                    this.defaultStartDate=""; 
                     this.defaultEndDate = "";
+
                 }
                 else{
-
+                    //取消了
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now; 
                 }
                 this.drawColumnMember()
             },

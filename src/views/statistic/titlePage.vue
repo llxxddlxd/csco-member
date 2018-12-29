@@ -7,8 +7,9 @@
               v-model="defaultStartDate"
                value-format=”yyyy-MM-dd”
               type="date"
-              format="yyyy-MM-dd"
+              format="yyyy-MM-dd" 
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
             <span class="demonstration">~</span>
@@ -16,11 +17,12 @@
               v-model="defaultEndDate"
                value-format=”yyyy-MM-dd”
               type="date"
-              format="yyyy-MM-dd"
+              format="yyyy-MM-dd" 
               @change="queryAgain"
+              @focus="clickAgain"
               placeholder="选择日">
             </el-date-picker>
-             <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
+            <el-checkbox v-model="selectAll" true-label="1" false-label="2" @change="queryAll(this)">全选</el-checkbox>
         </div> 
         <div>
             统计会员总数：{{totalMemers}}
@@ -65,17 +67,19 @@
                 member_data:[],
                 member_value:[],
                 member_column:[], 
-                selectAll:false,
+                selectAll:false, 
+                selectTime:1,
+                 
             }
         },
-        methods: {  
-            handleCurrentChange(val) {
-                this.page = val;
-                this.getConsume();
-            },  
-            selsChange: function (sels) {
-                this.sels = sels;
-            },
+        methods: {   
+            // handleCurrentChange(val) {
+            //     this.page = val;
+            //     this.getConsume();
+            // },  
+            // selsChange: function (sels) {
+            //     this.sels = sels;
+            // },
             drawColumnMember() {       
                 console.log("drawColumnMember")    
                 let para = {
@@ -221,20 +225,39 @@
                 });
             }, 
   
+  
             queryAgain(){
-                this.selectAll = false;
-                this.drawColumnMember()
+                if(this.defaultStartDate>this.defaultEndDate){
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now; 
+                    return;
+                } 
+                if(this.selectTime==1){
+                    this.selectAll=false;
+                    this.drawColumnMember()  
+                }  
 
             },
-            queryAll(){
-                if(this.selectAll){
-                    this.defaultStartDate = "";
+            clickAgain(){ 
+                 this.selectTime=1;
+            },
+            queryAll(value){ 
+                if(this.selectAll==true){
+                    this.selectTime=0;
+                    this.defaultStartDate=""; 
                     this.defaultEndDate = "";
-                }
-                else{
 
                 }
+                else{
+               
+                    //取消了
+                    this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+                    this.defaultEndDate = now; 
+                }
                 this.drawColumnMember()
+ 
+  
+             
             },
             drawCharts() {
                
