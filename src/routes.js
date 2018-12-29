@@ -34,7 +34,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/indexpage', component: statisticindex, name: '首页' },
@@ -49,7 +49,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/memberpage', component: statisticmember, name: '新增会员统计' },
@@ -59,7 +59,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/regionpage', component: statisticregion, name: '地域分布' },
@@ -69,7 +69,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/titlepage', component: statistictitle, name: '职称统计' }, 
@@ -79,7 +79,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/jobpage', component: statisticjob, name: '单位职务统计' },
@@ -90,7 +90,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '会员系统',
-        iconCls: 'fa fa-user',
+        iconCls: '',
         leaf:true,
         children: [
             { path: '/majorpage', component: statisticmajor, name: '专业特长及研究方向统计' },

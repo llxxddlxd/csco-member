@@ -301,12 +301,14 @@
             typeChange:function(value){  
                   if(this.defaultType == "year"){
                         if(this.defaultStartYear>this.defaultEndYear){
+                            this.$message.error("开始年份不能大于结束年份");
                             this.defaultStartYear= _defaultStartYear
                             this.defaultEndYear = _defaultEndYear
                             return;
                         } 
                     }
                     else if(this.defaultType == "month"){
+                        this.$message.error("开始月份不能大于结束月份");
                         if(this.defaultStartMonth>this.defaultEndMonth){
                             this.defaultStartMonth=_defaultStartMonth
                             this.defaultEndMonth = _defaultEndMonth
@@ -316,6 +318,7 @@
                     }
                     else{
                         if(this.defaultStartDate>this.defaultEndDate){
+                            this.$message.error("开始时间不能大于结束时间");
                             this.defaultStartDate=_defaultStartDate
                             this.defaultEndDate = _defaultEndDate
                             return;
@@ -620,6 +623,7 @@
                     　　show: true,
                     　　feature: {
                     　　　　saveAsImage: {
+                            name:"会员统计分布走势图",
                     　　　　show:true,
                     　　　　excludeComponents :['toolbox'],
                     　　　　pixelRatio: 2,
@@ -665,6 +669,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                                name:"会员统计分布柱状图",
                         　　　　show:true,
                         　　　　excludeComponents :['toolbox'],
                         　　　　pixelRatio: 2,
@@ -756,6 +761,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"缴费状态计分布饼状图",
 
                         　　　　show:true,
 
@@ -839,6 +845,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"缴费状态计分布柱状图",
 
                         　　　　show:true,
 
@@ -935,6 +942,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"会员类型分布柱状图",
 
                         　　　　show:true,
 
@@ -1018,6 +1026,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"会员类型分布饼状图",
 
                         　　　　show:true,
 
@@ -1118,6 +1127,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"学历状态分布病状图",
 
                         　　　　show:true,
 
@@ -1171,7 +1181,7 @@
                     this.chartEducationSecond = echarts.init(document.getElementById('chartEducationSecond'));
                     var names = this.education_dataColumn;
                     this.chartEducationSecond.setOption({
-                      title: { text: '缴费状态' },
+                      title: { text: '学历状态' },
                       tooltip: {},
                       xAxis: {
                           // show:false,   
@@ -1206,6 +1216,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"学历状态分布柱状图",
 
                         　　　　show:true,
 
@@ -1305,6 +1316,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"民族状态分布病状图",
 
                         　　　　show:true,
 
@@ -1393,6 +1405,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"民族状态分布柱状图",
 
                         　　　　show:true,
 
@@ -1490,6 +1503,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                            name:"性别分布饼状图",
 
                         　　　　show:true,
 
@@ -1503,6 +1517,17 @@
                         　　}
 
                         }
+                    });
+
+
+
+                    $('#export').on('click', function () {
+                        alert('111');
+                        var chartExportUrl = '/lang/EchartTest/Export';
+                        var picBase64Info = myChart.getDataURL();//获取echarts图的base64编码，为png格式。
+
+                        $('#chartForm').find('input[name="base64Info"]').val(picBase64Info);//将编码赋值给输入框                                               
+                        $('#chartForm').submit();
                     });
                     return ;
                 });
@@ -1576,6 +1601,7 @@
                         　　feature: {
 
                         　　　　saveAsImage: {
+                                name:"性别分布柱状图",
 
                         　　　　show:true,
 

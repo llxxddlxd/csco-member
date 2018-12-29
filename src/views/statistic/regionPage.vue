@@ -31,8 +31,7 @@
         <div class="echarts">
             <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchart"></div>
             <div style="float:right;">
-                <i class="fa fa-download" @click="download(1)"></i>
-
+                <i class="fa fa-arrow-down" aria-hidden="true"  @click="download(1)"></i>
                 <el-table  :data="memberTableData" style="width: 100%" id="memberId">
                   <el-table-column  prop="city" label="地区" width="180">
                   </el-table-column>
@@ -46,7 +45,7 @@
             <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchartCompany"></div>
             <!-- <i class="el-icon-delete"></i> -->
             <div style="float:right;">
-                <i class="fa fa-download" @click="download(2)"></i>
+                <i class="fa fa-arrow-down" aria-hidden="true" @click="download(2)"></i>
                 <el-table  :data="companyTableData" style="width: 100%" id="companyId">
                   <el-table-column  prop="city" label="地区" width="180">
                   </el-table-column>
@@ -55,6 +54,18 @@
                 </el-table>
             </div>
         </div> 
+
+
+        <div style="float:left;width:50%;">
+            <el-col :span="24" >
+                <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
+            </el-col>
+        </div>
+        <div  style="float:right;width:45%;">
+            <el-col :span="24">
+                <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
+            </el-col>
+        </div>
     </section>
    
 
@@ -72,7 +83,9 @@
     import FileSaver from 'file-saver'
     import XLSX from 'xlsx'
     let  now =new Date()
-    var _this = {} 
+    var _this = {}  
+    var resMemeber=[]
+    var resCompany=[]
     export default {
  
         props: ["userJson"],
@@ -96,15 +109,21 @@
                 defaultEndDate: now,
                 selectTime:1,
 
+                chartMemberFirst: null,
+                chartMemberSecond: null,
+
+                //初始数据
+                initData:global_.operatorChinaData()
+
             }
         },
         methods: {  
             download:function(value){
                 if(value==1){
-                    this.exportExcel("#memberId","会员.xlsx")
+                    this.exportExcel("#memberId","会员统计.xlsx")
                 }
                 else{
-                    this.exportExcel("#companyId","理事.xlsx")
+                    this.exportExcel("#companyId","理事统计.xlsx")
 
                 }
             } ,
@@ -122,6 +141,8 @@
 
             queryAgain(){
                 if(this.defaultStartDate>this.defaultEndDate){
+                    this.$message.error("开始时间不能大于结束时间");
+                    
                     this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
                     this.defaultEndDate = now; 
                     return;
@@ -179,67 +200,72 @@
                     // res = JSON.parse(res)
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
-                    if(res.status>0){ 
-                        console.log(res)
-                        this.$message.error("会员"+res.desc);
-                        return;
-                    }
-                    console.log(res.out_data);
- 
-                    this.totalMemers = res.out_data['total']; 
-                    // console.log(res.data) 
                     var realData =[];
                     let j = 0;
+                    if(res.status>0){
+                        console.log(res)
+                        this.$message.error("会员"+res.desc);
+                        realData = this.initData;
+                    }   
+                    else{
+                        console.log(res.out_data);
+                        resMemeber = res.data;
+                        this.totalMemers = res.out_data['total']; 
+                        // console.log(res.data) 
 
-                    // for (var i = 0;i<=10; i++) {
-                    for (var i = 0;i<=res.data.length - 1; i++) {
-                        // console.log(res.data[i])
-                        if(res.data[i].name!="不详"){
+                        // for (var i = 0;i<=10; i++) {
+                        for (var i = 0;i<=res.data.length - 1; i++) {
+                            // console.log(res.data[i])
+                            if(res.data[i].name!="不详"){
 
-                            var temp={};
-                            temp.value=res.data[i].count;
-                            var name = res.data[i].name;
-                            temp.name=name.replace("省","");
+                                var temp={};
+                                temp.value=res.data[i].count;
+                                var name = res.data[i].name;
+                                temp.name=name.replace("省","");
 
-                            var cityArray = res.data[i].cityArray;
-                            for(var value in cityArray){
-                                for(var one in cityArray[value]){
-                                    console.log(one) 
-                                    if(one=='不详'){ //如果等于不详，减去所占数据
-                                        temp.value =temp.value- parseInt(cityArray[value][one])
-
-                                    }
-                                }
-                            }
-                            realData[j]= temp;
-                            j++;
-                            
-                            if(res.data[i].name == "北京"){
-                                _this.memberTableData= [];
-                                let memberTableData= new Array();
-                                console.log(_this.memberTableData ); 
                                 var cityArray = res.data[i].cityArray;
                                 for(var value in cityArray){
                                     for(var one in cityArray[value]){
-                                        console.log(one)
-                                        var temp2 ={};
-                                        if(one!='不详'){
-                                            temp2.count =cityArray[value][one]; 
-                                            temp2.city =one;  
-                                            memberTableData.push(temp2);
-                                        } 
+                                        if(one=='不详'){ //如果等于不详，减去所占数据
+                                            temp.value =temp.value- parseInt(cityArray[value][one])
+
+                                        }
                                     }
                                 }
-                                _this.memberTableData= memberTableData ;   
-                            }
+                                realData[j]= temp;
+                                j++;
+                                
+                                if(res.data[i].name == "北京"){
+                                    _this.memberTableData= [];
+                                    let memberTableData= new Array();
+                                    console.log(_this.memberTableData ); 
+                                    var cityArray = res.data[i].cityArray;
+                                    for(var value in cityArray){
+                                        for(var one in cityArray[value]){
+                                            console.log(one)
+                                            var temp2 ={};
+                                            if(one!='不详'){
+                                                temp2.count =cityArray[value][one]; 
+                                                temp2.city =one;  
+                                                memberTableData.push(temp2);
+                                            } 
+                                        }
+                                    }
+                                    _this.memberTableData= memberTableData ;   
+                                }
 
-                        }
-                    }  
-console.log(realData)
+                            }
+                        }  
+
+                    }
+                    console.log( "xkdkdkdkdkddkdkdk")
+                    console.log( resMemeber.length)
 
                     let myChart = echarts.init(this.$refs.myEchart); //这里是为了获得容器所在位置   
                     myChart.on('click', function (param) {
                         // alert(param.name);
+                        res.data = resMemeber;
+                        console.log(res.data)
                         console.log(res.data.length)
                         _this.memberTableData= [];
                         let memberTableData= new Array();
@@ -352,13 +378,16 @@ console.log(realData)
                             }
                         ]
                     }; 
-                    myChart.setOption(option); 
-
+                    myChart.setOption(option);  
+                    //绘制柱状图跟饼图 
+                    this.drawCharts(realData); 
                     return ;
-                    });
+                });
             }, 
+            
+            //理事分布
             echartsMapCompany:function(value){
-                  console.log("getCompanyByProvince")    
+                console.log("getCompanyByProvince")    
                 let para = {
                   
                     Committeeid : global_.Committeeid,
@@ -367,7 +396,7 @@ console.log(realData)
                     endDay:this.dateFormatter(this.defaultEndDate), 
                 };
                 
-                let ret = ''
+                let ret = '';
                 for (let it in para) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(para[it]) + '&'
                 }
@@ -377,71 +406,74 @@ console.log(realData)
                     // res = JSON.parse(res)
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
-                    if(res.status>0){
-                        console.log("getCompanyByProvince error");
-                        console.log(res)
-                        this.$message.error("理事"+res.desc);
-                        return;
-                    }
-                    console.log(res.out_data);
-                    this.totalCompany = res.out_data["total"];
-                    // console.log(res.data)
-                    
+
                     var realData =[];
-                    let j = 0;
-                    // for (var i = 0;i<=10; i++) {
-                    for (var i = 0;i<=res.data.length - 1; i++) {
-                        // console.log(res.data[i])
-                        if(res.data[i].name!="不详"){
+                        let j = 0;
+                    if(res.status>0){
+                        console.log("getCompanyByProvince error"); 
+                        this.$message.error("理事"+res.desc);
+                        realData = this.realData;
+                    }
+                    else{
+                        console.log(32339999999999999)
+                        console.log(res.data);
+                        resCompany = res.data;
+                        this.totalCompany = res.out_data["total"];
+                        // console.log(res.data)
+                        
+                        // for (var i = 0;i<=10; i++) {
+                        for (var i = 0;i<=res.data.length - 1; i++) {
+                            // console.log(res.data[i])
+                            if(res.data[i].name!="不详"){
 
-                            var temp={};
-                            temp.value=res.data[i].count;
-                            var name = res.data[i].name;
-                            temp.name=name.replace("省","");
-                             var cityArray = res.data[i].cityArray;
-                            for(var value in cityArray){
-                                for(var one in cityArray[value]){
-                                    console.log(one) 
-                                    if(one=='不详'){ //如果等于不详，减去所占数据
-                                        temp.value =temp.value- parseInt(cityArray[value][one])
-
-                                    }
-                                }
-                            }
-                            realData[j]= temp;
-
-                            j++;
-                            if(res.data[i].name == "北京"){
-                                _this.memberTableData= [];
-                                let memberTableData= new Array();
-                                console.log(_this.memberTableData ); 
-                                var cityArray = res.data[i].cityArray; 
+                                var temp={};
+                                temp.value=res.data[i].count;
+                                var name = res.data[i].name;
+                                temp.name=name.replace("省","");
+                                 var cityArray = res.data[i].cityArray;
                                 for(var value in cityArray){
-                                    console.log(value);
                                     for(var one in cityArray[value]){
-                                        console.log(one)
-                                        var temp2 ={};
-                                        if(one!='不详'){
-                                            temp2.count =cityArray[value][one]; 
-                                            temp2.city =one;  
-                                            memberTableData.push(temp2);
-                                        }  
+                                        if(one=='不详'){ //如果等于不详，减去所占数据
+                                            temp.value =temp.value- parseInt(cityArray[value][one])
+
+                                        }
                                     }
                                 }
-                                _this.companyTableData= memberTableData ; 
+                                realData[j]= temp;
+
+                                j++;
+                                if(res.data[i].name == "北京"){
+                                    _this.memberTableData= [];
+                                    let memberTableData= new Array();
+                                    var cityArray = res.data[i].cityArray; 
+                                    for(var value in cityArray){
+                                        for(var one in cityArray[value]){
+                                            var temp2 ={};
+                                            if(one!='不详'){
+                                                temp2.count =cityArray[value][one]; 
+                                                temp2.city =one;  
+                                                memberTableData.push(temp2);
+                                            }  
+                                        }
+                                    }
+                                    _this.companyTableData= memberTableData ; 
+                                }
+
+     
+
                             }
-
- 
-
                         }
+
                     }
                      
-                let myChart = echarts.init(this.$refs.myEchartCompany); //这里是为了获得容器所在位置 
-                    
+                    let myChart = echarts.init(this.$refs.myEchartCompany); //这里是为了获得容器所在位置 
+                    console.log(3434343434343434)
+                    console.log(res.data)
                     myChart.on('click', function (param) {
                         // alert(param.name);
                         _this.companyTableData=[];
-                        console.log(res.data.length)
+                        res.data = resCompany;
+                        console.log(res.data)
                         let memberTableData= new Array(); 
                         for(var i = 0;i<res.data.length;i++){
                             var dataName =res.data[i].name.replace("省","");
@@ -470,7 +502,7 @@ console.log(realData)
  
                             }
                         } 
-                });
+                    });
 
                 var option = {
                     title : {
@@ -556,15 +588,130 @@ console.log(realData)
 
 
             },
-            drawCharts() {
-               
+            drawCharts(data) {
+                console.log(data)
+                let temp1 = global_.operatorChinaDataForEchart(data);
+                this.member_data=temp1['member_data'];
+                this.member_column=temp1['member_column'];
+                this.member_value=temp1['member_value']; 
+                console.log(this.member_value)
+                console.log(this.member_column)
+                console.log(this.member_data)
+                //底部俩图
+                this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));
+                this.chartMemberFirst.setOption({
+                    title: {
+                        text: '会员地域饼状图',
+                        subtext: '',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: this.member_column
+                    },
+                    series: [
+                        {
+                            name: '会员地域饼状图',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '60%'],
+                            data: this.member_data,
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ],
+                    color:global_.colorSelect,
+
+                    toolbox: {
+
+                    　　show: true,
+
+                    　　feature: {
+
+                    　　　　saveAsImage: {
+                                name:"会员地域分布饼状图",
+
+                    　　　　　　　show:true,
+
+                    　　　　     excludeComponents :['toolbox'],
+
+                    　　　　     pixelRatio: 2,
+                                title:'下载'
+
+                    　　　　}
+
+                    　　}
+
+                    }
+                }); 
+                //second
+                this.chartMemberSecond = echarts.init(document.getElementById('chartMemberSecond'));
+                
+                var names = this.member_column;
+                this.chartMemberSecond.setOption({
+                    title: { text: '会员地域柱状图' },
+                        toolboxoltip: {},
+                        xAxis: {
+                          data: names
+                        },
+                        yAxis: {},
+                        series: [{
+                          name: '会员地域柱状图',
+                          type: 'bar',
+                          data: this.member_value,
+                          itemStyle: {
+                                normal: {
+            　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                                    color: function(params) {
+                                        // build a color map as your need.
+                                        var colorList = global_.colorSelect;
+                                        return colorList[params.dataIndex]
+
+                                    },             
+
+                                }
+                            },
+                        }],
+
+                        toolbox: {
+
+                        　　show: true,
+
+                        　　feature: {
+
+                        　　　　saveAsImage: {
+                                    name:"会员地域分布柱状图",
+
+                            　　　　show:true,
+
+                            　　　　excludeComponents :['toolbox'],
+
+                            　　　　pixelRatio: 2,
+                                    title:'下载'
+
+                        　　　　}
+
+                    　　}
+
+                    }
+                }); 
             },
         },
         mounted() {          
             console.log("mounted")
             console.log(this.defaultStartDate)
             this.echartsMapMember();
-            this.echartsMapCompany();  
+            this.echartsMapCompany();
         },
         updated: function () {
         },

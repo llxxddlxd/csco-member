@@ -156,13 +156,14 @@
                     　　feature: {
 
                     　　　　saveAsImage: {
+                                name:"职称分布饼状图",
 
-                    　　　　show:true,
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'下载'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
                     　　　　}
 
@@ -207,13 +208,12 @@
                     　　feature: {
 
                     　　　　saveAsImage: {
+                                name:"职称分布柱状图",
 
-                    　　　　show:true,
-
-                    　　　　excludeComponents :['toolbox'],
-
-                    　　　　pixelRatio: 2,
-                            title:'下载'
+                    　　　　　　　　show:true,
+          　　　　　　　　　　　　　　showexcludeComponents :['toolbox'],
+          　　　　　　　　　　　　　　showpixelRatio: 2,
+                                title:'下载'
 
                     　　　　}
 
@@ -228,6 +228,8 @@
   
             queryAgain(){
                 if(this.defaultStartDate>this.defaultEndDate){
+                    this.$message.error("开始时间不能大于结束时间");
+                    
                     this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
                     this.defaultEndDate = now; 
                     return;

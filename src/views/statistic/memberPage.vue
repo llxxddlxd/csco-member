@@ -165,7 +165,7 @@
                     　　feature: {
 
                     　　　　saveAsImage: {
-
+                                name:"新增会员分布饼状图",
                     　　　　show:true,
 
                     　　　　excludeComponents :['toolbox'],
@@ -200,7 +200,7 @@
                 　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
                                         color: function(params) {
                                             // build a color map as your need.
-                                            var colorList = global_.colorSelect;
+                                            var colorList = ["orange",global_.colorSelect[0],global_.colorSelect[1]];
                                             return colorList[params.dataIndex]
 
                                         },             
@@ -216,6 +216,7 @@
                     　　feature: {
 
                     　　　　saveAsImage: {
+                                name:"新增会员分布柱状图",
 
                     　　　　show:true,
 
@@ -237,6 +238,7 @@
             
             queryAgain(){
                 if(this.defaultStartDate>this.defaultEndDate){
+                    this.$message.error("开始时间不能大于结束时间");
                     this.defaultStartDate=new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
                     this.defaultEndDate = now; 
                     return;

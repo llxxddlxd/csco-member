@@ -59,9 +59,7 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue',
                 }
 
             }
-        }
-        console.log(member_column)
-        console.log(member_column_bak2)
+        } 
 
         if(member_column_bak2.length>0){
             //已经返回其他了               合并三个数组
@@ -80,8 +78,7 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue',
             member_value.pop();
             member_data.pop();
 
-        } 
-        console.log(member_column)
+        }  
         member_column = member_column.concat(member_column_bak,member_column_bak2)
         member_value = member_value.concat(member_value_bak,member_value_bak2)
 
@@ -99,6 +96,45 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue',
 
         return ret;
 
+    },
+    //数据已经整理完成
+    operatorChinaDataForEchart:function(data){
+        let tempcount =0;
+       
+        let member_data=[];
+        let member_column=[];
+        let member_value=[];
+       
+        for(var i = 0;i<7;i++){
+            member_column[i] = data[i].name;
+            member_value[i] = data[i].value;
+            var temp ={};
+            temp.value=data[i].value
+            temp.name=data[i].name
+            member_data[i] = temp; 
+             
+            
+        }
+        let ret = [];
+        ret['member_column']=member_column;
+        ret['member_value']=member_value;
+        ret['member_data']=member_data;
+        console.log(1111111111111111)
+        console.log(member_data)
+
+        return ret;
+
+    },
+    operatorChinaData:function(){
+        let column = ["北京","天津","上海","重庆","河北","山西","辽宁","吉林","黑龙江","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东省","海南","四川","贵州省","云南","陕西","甘肃","青海","台湾","内蒙古","广西","西藏","宁夏","新疆","香港","澳门"];
+        let data = [];
+        for (var i =0;i< column.length; i++) {
+            var temp = {};
+            temp.value = 0;
+            temp.name = column[i];
+            data[i] = temp;
+        }
+        return temp;
     }
   }
 </script>
