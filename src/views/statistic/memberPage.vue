@@ -30,12 +30,10 @@
         </div>
        
         <div>
-            <el-col>
-            饼状图
+            <el-col> 
             <div id="chartMemberFirst" style="width:100%; height:400px;"></div> 
             </el-col>
-            <el-col> 
-            柱状图
+            <el-col>  
             <div id="chartMemberSecond" style="width:100%; height:400px;"></div>      
             </el-col>
        
@@ -124,7 +122,7 @@
 
                     this.chartMemberFirst.setOption({
                         title: {
-                            text: '会员类型',
+                            text: '新增会员比例图',
                             subtext: '',
                             x: 'center'
                         },
@@ -139,7 +137,7 @@
                         },
                         series: [
                             {
-                                name: '会员类型',
+                                name: '新增会员比例',
                                 type: 'pie',
                                 radius: '55%',
                                 center: ['50%', '60%'],
@@ -185,14 +183,14 @@
                     
                     var names = ["申请人数", "批准人数","拒绝人数"];
                     this.chartMemberSecond.setOption({
-                      title: { text: '会员' },
+                      title: { text: '新增会员数量图' },
                       tooltip: {},
                       xAxis: {
                           data: names
                       },
                       yAxis: {},
                       series: [{
-                          name: '会员',
+                          name: '新增会员数量',
                           type: 'bar',
                           data: [this.totalApplyMemers,this.member_approval, this.member_refuse],
                               itemStyle: {
