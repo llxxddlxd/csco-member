@@ -308,8 +308,8 @@
                         } 
                     }
                     else if(this.defaultType == "month"){
-                        this.$message.error("开始月份不能大于结束月份");
                         if(this.defaultStartMonth>this.defaultEndMonth){
+                            this.$message.error("开始月份不能大于结束月份");
                             this.defaultStartMonth=_defaultStartMonth
                             this.defaultEndMonth = _defaultEndMonth
                             return;
@@ -1521,14 +1521,14 @@
 
 
 
-                    $('#export').on('click', function () {
-                        alert('111');
-                        var chartExportUrl = '/lang/EchartTest/Export';
-                        var picBase64Info = myChart.getDataURL();//获取echarts图的base64编码，为png格式。
+                    // $('#export').on('click', function () {
+                    //     alert('111');
+                    //     var chartExportUrl = '/lang/EchartTest/Export';
+                    //     var picBase64Info = myChart.getDataURL();//获取echarts图的base64编码，为png格式。
 
-                        $('#chartForm').find('input[name="base64Info"]').val(picBase64Info);//将编码赋值给输入框                                               
-                        $('#chartForm').submit();
-                    });
+                    //     $('#chartForm').find('input[name="base64Info"]').val(picBase64Info);//将编码赋值给输入框                                               
+                    //     $('#chartForm').submit();
+                    // });
                     return ;
                 });
             },
