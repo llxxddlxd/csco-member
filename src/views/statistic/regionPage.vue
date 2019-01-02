@@ -24,9 +24,9 @@
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
         </div> 
-        <div>
-            统计会员总数：{{totalMemers}}
-            统计理事总数：{{totalCompany}}
+        <div style="margin-top: 10px;margin-bottom: 10px">
+            <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">统计会员总数：{{totalMemers}}</span>
+            <span style="font-size: 20px">统计理事总数：{{totalCompany}}</span>
         </div> 
         <div class="echarts">
             <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchart"></div>
@@ -208,7 +208,7 @@
                         realData = this.initData;
                     }   
                     else{
-                        console.log(res.out_data);
+                        // console.log(res.out_data);
                         resMemeber = res.data;
                         this.totalMemers = res.out_data['total']; 
                         // console.log(res.data) 
@@ -238,7 +238,7 @@
                                 if(res.data[i].name == "北京"){
                                     _this.memberTableData= [];
                                     let memberTableData= new Array();
-                                    console.log(_this.memberTableData ); 
+                                    // console.log(_this.memberTableData ); 
                                     var cityArray = res.data[i].cityArray;
                                     for(var value in cityArray){
                                         for(var one in cityArray[value]){
@@ -258,7 +258,7 @@
                         }  
 
                     }
-                    console.log( "xkdkdkdkdkddkdkdk")
+                    // console.log( "xkdkdkdkdkddkdkdk")
                     console.log( resMemeber.length)
 
                     let myChart = echarts.init(this.$refs.myEchart); //这里是为了获得容器所在位置   
@@ -589,6 +589,7 @@
 
             },
             drawCharts(data) {
+                return;
                 console.log(data)
                 let temp1 = global_.operatorChinaDataForEchart(data);
                 this.member_data=temp1['member_data'];

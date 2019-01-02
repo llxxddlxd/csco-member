@@ -1,4 +1,4 @@
-// import Login from './views/Login.vue'Home
+import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 import Home from './views/Home.vue'
 import Main from './views/Main.vue'
@@ -18,12 +18,12 @@ import statisticregion from './views/statistic/regionPage.vue'
 // import vae from './views/charts/vae.vue'
 
 let routes = [
-    // {
-    //     path: '/login',
-    //     component: Login,
-    //     name: '',
-    //     hidden: true
-    // },
+    {
+        path: '/login',
+        component: Login,
+        name: '',
+        hidden: true
+    },
     {
         path: '/404',
         component: NotFound,

@@ -20,7 +20,7 @@
               v-model="defaultStartYear"
               type="year"
               placeholder="选择年" 
-              @change="typeChange"
+              @change="typeChangeYear"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -29,7 +29,7 @@
               v-model="defaultEndYear"
               type="year"
               placeholder="选择年"
-              @change="typeChange"
+              @change="typeChangeYear"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -40,7 +40,7 @@
               v-model="defaultStartMonth"
               type="month"
               placeholder="选择月"
-              @change="typeChange"
+              @change="typeChangeMonth"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -49,7 +49,7 @@
               v-model="defaultEndMonth"
               type="month"
               placeholder="选择月"
-              @change="typeChange"
+              @change="typeChangeMonth"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -60,7 +60,7 @@
               v-model="defaultStartDate"
               type="date"
               placeholder="选择日"
-              @change="typeChange"
+              @change="typeChangeDate"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -69,13 +69,13 @@
               v-model="defaultEndDate"
               type="date"
               placeholder="选择日"
-              @change="typeChange"
+              @change="typeChangeDate"
               @focus="clickAgain"
               >
             </el-date-picker>
         </div> 
-        <div>
-            会员总数：{{totalMemers}}
+        <div style="margin-top: 10px;margin-bottom: 10px">
+            <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">会员总数：{{totalMemers}}</span>
         </div>
         <div>
             <el-col>
@@ -111,7 +111,7 @@
                 <el-col :span="24" v-show="radioMember==1">
                     <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
                 </el-col>
-                <el-col :span="24" v-show="radioMember==2">
+                <el-col :span="23" v-show="radioMember==2">
                     <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
                 
                 </el-col>
@@ -263,22 +263,24 @@
         },
         methods: {
             dimensionChange:function(){
-                if(this.selectAll==true){
-                    if(this.defaultType == "year"){
-                        this.defaultStartYear = '';
-                        this.defaultEndYear = ''; 
-                    }
-                    else if(this.defaultType == "month"){                    
-                        this.defaultStartMonth = '';
-                        this.defaultEndMonth = ''; 
+                console.log('dimensionCHange')
+                //切换选项卡，默认恢复到最初的统计：取消全选，加上时间范围
+                // if(this.selectAll==true){
+                //     if(this.defaultType == "year"){
+                //         this.defaultStartYear = '';
+                //         this.defaultEndYear = ''; 
+                //     }
+                //     else if(this.defaultType == "month"){                    
+                //         this.defaultStartMonth = '';
+                //         this.defaultEndMonth = ''; 
 
-                    }
-                    else{    
-                        this.defaultStartDate = '';
-                        this.defaultEndDate = ''; 
-                    }  
-                }
-                else{
+                //     }
+                //     else{    
+                //         this.defaultStartDate = '';
+                //         this.defaultEndDate = ''; 
+                //     }  
+                // }
+                // else{
 
                     if(this.defaultType == "year"){
                         this.defaultStartYear = _defaultStartYear;
@@ -294,11 +296,14 @@
                         this.defaultEndDate = _defaultEndDate; 
 
                     }     
-                }
-                this.drawCharts();
+
+                // }
+                this.selectAll=false;
+                // this.drawCharts();
 
             },
-            typeChange:function(value){  
+            typeChangeYear:function(value){  
+                console.log('typeChangeYear')
                   if(this.defaultType == "year"){
                         if(this.defaultStartYear>this.defaultEndYear){
                             this.$message.error("开始年份不能大于结束年份");
@@ -307,7 +312,43 @@
                             return;
                         } 
                     }
-                    else if(this.defaultType == "month"){
+                    // else if(this.defaultType == "month"){
+                    //     if(this.defaultStartMonth>this.defaultEndMonth){
+                    //         this.$message.error("开始月份不能大于结束月份");
+                    //         this.defaultStartMonth=_defaultStartMonth
+                    //         this.defaultEndMonth = _defaultEndMonth
+                    //         return;
+                    //     } 
+
+                    // }
+                    // else{
+                    //     if(this.defaultStartDate>this.defaultEndDate){
+                    //         this.$message.error("开始时间不能大于结束时间");
+                    //         this.defaultStartDate=_defaultStartDate
+                    //         this.defaultEndDate = _defaultEndDate
+                    //         return;
+                    //     } 
+                    // }
+
+
+                if(this.selectTime==1){
+                    this.selectAll=false;
+                    // this.drawCharts();
+                }           
+            },
+
+            typeChangeMonth:function(value){  
+                console.log('typeChangeMonth')
+                  // if(this.defaultType == "year"){
+                  //       if(this.defaultStartYear>this.defaultEndYear){
+                  //           this.$message.error("开始年份不能大于结束年份");
+                  //           this.defaultStartYear= _defaultStartYear
+                  //           this.defaultEndYear = _defaultEndYear
+                  //           return;
+                  //       } 
+                  //   }
+                    // else
+                     if(this.defaultType == "month"){
                         if(this.defaultStartMonth>this.defaultEndMonth){
                             this.$message.error("开始月份不能大于结束月份");
                             this.defaultStartMonth=_defaultStartMonth
@@ -316,22 +357,58 @@
                         } 
 
                     }
-                    else{
+                    // else{
+                    //     if(this.defaultStartDate>this.defaultEndDate){
+                    //         this.$message.error("开始时间不能大于结束时间");
+                    //         this.defaultStartDate=_defaultStartDate
+                    //         this.defaultEndDate = _defaultEndDate
+                    //         return;
+                    //     } 
+                    // }
+
+
+                if(this.selectTime==1){
+                    this.selectAll=false;
+                    // this.drawCharts();
+                }           
+            },
+
+            typeChangeDate:function(value){ 
+                console.log('typeChangeDate') 
+                  // if(this.defaultType == "year"){
+                  //       if(this.defaultStartYear>this.defaultEndYear){
+                  //           this.$message.error("开始年份不能大于结束年份");
+                  //           this.defaultStartYear= _defaultStartYear
+                  //           this.defaultEndYear = _defaultEndYear
+                  //           return;
+                  //       } 
+                  //   }
+                  //   else if(this.defaultType == "month"){
+                  //       if(this.defaultStartMonth>this.defaultEndMonth){
+                  //           this.$message.error("开始月份不能大于结束月份");
+                  //           this.defaultStartMonth=_defaultStartMonth
+                  //           this.defaultEndMonth = _defaultEndMonth
+                  //           return;
+                  //       } 
+
+                  //   }
+                  //   else{
                         if(this.defaultStartDate>this.defaultEndDate){
                             this.$message.error("开始时间不能大于结束时间");
                             this.defaultStartDate=_defaultStartDate
                             this.defaultEndDate = _defaultEndDate
                             return;
                         } 
-                    }
+                    // }
 
 
                 if(this.selectTime==1){
                     this.selectAll=false;
-                    this.drawCharts();
+                    // this.drawCharts();
                 }           
             },
             clickAgain(){ 
+                console.log("clickAgain")
                  this.selectTime=1;
             },
             queryAll(){  
@@ -369,17 +446,17 @@
 
                 }
                 //改变来时间控件／全选，全部查询
-                this.drawCharts();
+                // this.drawCharts();
             },
 
             drawCharts() {
                 console.log("drawCharts")  
-                this.drawColumnTotal()
-                this.changePay();
-                this.changeMember();
-                this.changeEducation();
-                this.changeNation();
-                this.changeGender();        
+                // this.drawColumnTotal()
+                // this.changePay();
+                // this.changeMember();
+                // this.changeEducation();
+                // this.changeNation();
+                // this.changeGender();        
                
             },
             changePay(){
@@ -1623,7 +1700,7 @@
         },
         mounted() {
             console.log("mounted")
-            this.drawColumnTotal();
+            // this.drawColumnTotal();
         },
         updated: function () { 
         },

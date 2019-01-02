@@ -7,8 +7,8 @@ import 'element-ui/lib/theme-default/index.css'
 import VueRouter from 'vue-router'
 import store from './vuex/store'
 import Vuex from 'vuex'
-//import NProgress from 'nprogress'
-//import 'nprogress/nprogress.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import routes from './routes'
 // import Mock from './mock'
 // Mock.bootstrap();
@@ -25,16 +25,19 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  //NProgress.start();
-  // if (to.path == '/login') {
-  //   sessionStorage.removeItem('user');
-  // }
-  // let user = JSON.parse(sessionStorage.getItem('user'));
-  // if (!user && to.path != '/login') {
-    // next({ path: '/login' })
-  // } else {
+  NProgress.start();
+  if (to.path == '/login') {
+    // sessionStorage.removeItem('user');
+  }
+  let user = (sessionStorage.getItem('user'));
+  if (!user && to.path != '/login') {
+    next({ path: '/login' })
+  } else {
+    console.log(12345)
+    console.log(to.path)
     next()
-  // }
+    
+  }
 })
 
 //默认返回yyyy-MM-dd HH-mm-ss

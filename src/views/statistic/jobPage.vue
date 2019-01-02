@@ -24,8 +24,8 @@
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
         </div> 
-        <div>
-            统计会员总数：{{totalMemers}}
+        <div style="margin-top: 10px;margin-bottom: 10px">
+            <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">统计会员总数：{{totalMemers}}</span>
         </div>
        
         <div> 
