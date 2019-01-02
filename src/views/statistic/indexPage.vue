@@ -12,7 +12,7 @@
               :value="item.value">
             </el-option>
         </el-select> 
-        <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
+        <el-checkbox v-model="selectAll" @change="queryAll">全选</el-checkbox>
 
         <div class="yearSpan" v-if="defaultType=='year'">
             <span class="demonstration">日期：</span>
@@ -20,7 +20,7 @@
               v-model="defaultStartYear"
               type="year"
               placeholder="选择年" 
-              @change="typeChangeYear"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -29,7 +29,7 @@
               v-model="defaultEndYear"
               type="year"
               placeholder="选择年"
-              @change="typeChangeYear"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -40,7 +40,7 @@
               v-model="defaultStartMonth"
               type="month"
               placeholder="选择月"
-              @change="typeChangeMonth"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -49,7 +49,7 @@
               v-model="defaultEndMonth"
               type="month"
               placeholder="选择月"
-              @change="typeChangeMonth"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -60,7 +60,7 @@
               v-model="defaultStartDate"
               type="date"
               placeholder="选择日"
-              @change="typeChangeDate"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -69,7 +69,7 @@
               v-model="defaultEndDate"
               type="date"
               placeholder="选择日"
-              @change="typeChangeDate"
+              @change="typeChange"
               @focus="clickAgain"
               >
             </el-date-picker>
@@ -79,8 +79,10 @@
         </div>
         <div>
             <el-col>
-            <el-radio v-model="radioTotal" label="1" :change="drawColumnTotal()">会员走势图</el-radio>
-            <el-radio v-model="radioTotal" label="2" :change="drawColumnTotal()">会员柱状图</el-radio>
+                  <el-radio-group v-model="radioTotal" @change="drawColumnTotal">
+                    <el-radio :label="1">会员走势图</el-radio>
+                    <el-radio :label="2">会员柱状图</el-radio> 
+                  </el-radio-group> 
             </el-col>
             <el-col :span="22" v-show="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
@@ -92,10 +94,16 @@
         </div>
         <div>
             <div  style="float:left;width:50%;">
-                <el-col>
-                <el-radio v-model="radioPay" label="1" :change="changePay()">缴费饼状图</el-radio>
-                <el-radio v-model="radioPay" label="2" :change="changePay()">缴费柱状图</el-radio> 
+                <el-col> 
+
+                  <el-radio-group v-model="radioPay" @change="changePay">
+                    <el-radio :label="1">缴费饼状图</el-radio>
+                    <el-radio :label="2">缴费柱状图</el-radio> 
+                  </el-radio-group> 
+
                 </el-col>
+
+
                 <el-col :span="24" v-show="radioPay==1">
                     <div id="chartPayFirst" style="width:100%; height:400px;"></div>
                 </el-col>
@@ -104,9 +112,11 @@
                 </el-col>
             </div>
             <div  style="float:right;width:45%;">
-                <el-col>
-                <el-radio v-model="radioMember" label="1" :change="changeMember()">会员饼状图</el-radio>
-                <el-radio v-model="radioMember" label="2" :change="changeMember()">会员柱状图</el-radio>
+                <el-col> 
+                  <el-radio-group v-model="radioMember" @change="changeMember">
+                    <el-radio :label="1">会员饼状图</el-radio>
+                    <el-radio :label="2">会员柱状图</el-radio> 
+                  </el-radio-group> 
                 </el-col>
                 <el-col :span="24" v-show="radioMember==1">
                     <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
@@ -118,9 +128,12 @@
         </div>
         <div>
             <div style="float:left;width:50%;">
-                <el-col>
-                <el-radio v-model="radioEducation" label="1" :change="changeEducation()">教育饼状图</el-radio>
-                <el-radio v-model="radioEducation" label="2" :change="changeEducation()">教育柱状图</el-radio>
+                <el-col> 
+
+                  <el-radio-group v-model="radioEducation" @change="changeEducation">
+                    <el-radio :label="1">教育饼状图</el-radio>
+                    <el-radio :label="2">教育柱状图</el-radio> 
+                  </el-radio-group> 
                 </el-col>
 
                 <el-col :span="24" v-show="radioEducation==1">
@@ -131,9 +144,11 @@
                 </el-col>
             </div>
             <div style="float:right;width:45%;">
-                <el-col>
-                <el-radio v-model="radioNation" label="1" :change="changeNation()">民族饼状图</el-radio>
-                <el-radio v-model="radioNation" label="2" :change="changeNation()">民族柱状图</el-radio>
+                <el-col> 
+                  <el-radio-group v-model="radioNation" @change="changeNation">
+                    <el-radio :label="1">民族饼状图</el-radio>
+                    <el-radio :label="2">民族柱状图</el-radio> 
+                  </el-radio-group> 
                 </el-col>
                 <el-col :span="24" v-show="radioNation==1">
                     <div id="chartNationFirst" style="width:100%; height:400px;"></div>
@@ -144,9 +159,11 @@
             </div>
         </div>
         <el-col >
-            <el-col>
-            <el-radio v-model="radioGender" label="1" :change="changeGender()">性别饼状图</el-radio>
-            <el-radio v-model="radioGender" label="2" :change="changeGender()">性别柱状图</el-radio>
+            <el-col> 
+                  <el-radio-group v-model="radioGender" @change="changeGender">
+                    <el-radio :label="1">性别饼状图</el-radio>
+                    <el-radio :label="2">性别柱状图</el-radio> 
+                  </el-radio-group> 
             </el-col>
             <el-col :span="12" v-show="radioGender==1">
                 <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
@@ -226,12 +243,12 @@
                 defaultStartDate: _defaultStartDate,
                 defaultEndDate: _defaultEndDate,
 
-                radioTotal:"1",
-                radioPay:"1",
-                radioMember:"1",
-                radioEducation:"1",
-                radioNation:"1",
-                radioGender:"1",
+                radioTotal:1,
+                radioPay:1,
+                radioMember:1,
+                radioEducation:1,
+                radioNation:1,
+                radioGender:1,
 
                 chartTotalFirst: null,
                 chartTotalSecond: null,
@@ -298,11 +315,11 @@
 
                 // }
                 this.selectAll=false;
-                // this.drawCharts();
+                this.drawCharts();
 
             },
-            typeChangeYear:function(value){  
-                console.log('typeChangeYear')
+            typeChange:function(value){  
+                console.log('typeChange')
                   if(this.defaultType == "year"){
                         if(this.defaultStartYear>this.defaultEndYear){
                             this.$message.error("开始年份不能大于结束年份");
@@ -311,43 +328,7 @@
                             return;
                         } 
                     }
-                    // else if(this.defaultType == "month"){
-                    //     if(this.defaultStartMonth>this.defaultEndMonth){
-                    //         this.$message.error("开始月份不能大于结束月份");
-                    //         this.defaultStartMonth=_defaultStartMonth
-                    //         this.defaultEndMonth = _defaultEndMonth
-                    //         return;
-                    //     } 
-
-                    // }
-                    // else{
-                    //     if(this.defaultStartDate>this.defaultEndDate){
-                    //         this.$message.error("开始时间不能大于结束时间");
-                    //         this.defaultStartDate=_defaultStartDate
-                    //         this.defaultEndDate = _defaultEndDate
-                    //         return;
-                    //     } 
-                    // }
-
-
-                if(this.selectTime==1){
-                    this.selectAll=false;
-                    // this.drawCharts();
-                }           
-            },
-
-            typeChangeMonth:function(value){  
-                console.log('typeChangeMonth')
-                  // if(this.defaultType == "year"){
-                  //       if(this.defaultStartYear>this.defaultEndYear){
-                  //           this.$message.error("开始年份不能大于结束年份");
-                  //           this.defaultStartYear= _defaultStartYear
-                  //           this.defaultEndYear = _defaultEndYear
-                  //           return;
-                  //       } 
-                  //   }
-                    // else
-                     if(this.defaultType == "month"){
+                    else if(this.defaultType == "month"){
                         if(this.defaultStartMonth>this.defaultEndMonth){
                             this.$message.error("开始月份不能大于结束月份");
                             this.defaultStartMonth=_defaultStartMonth
@@ -356,61 +337,28 @@
                         } 
 
                     }
-                    // else{
-                    //     if(this.defaultStartDate>this.defaultEndDate){
-                    //         this.$message.error("开始时间不能大于结束时间");
-                    //         this.defaultStartDate=_defaultStartDate
-                    //         this.defaultEndDate = _defaultEndDate
-                    //         return;
-                    //     } 
-                    // }
-
-
-                if(this.selectTime==1){
-                    this.selectAll=false;
-                    // this.drawCharts();
-                }           
-            },
-
-            typeChangeDate:function(value){ 
-                console.log('typeChangeDate') 
-                  // if(this.defaultType == "year"){
-                  //       if(this.defaultStartYear>this.defaultEndYear){
-                  //           this.$message.error("开始年份不能大于结束年份");
-                  //           this.defaultStartYear= _defaultStartYear
-                  //           this.defaultEndYear = _defaultEndYear
-                  //           return;
-                  //       } 
-                  //   }
-                  //   else if(this.defaultType == "month"){
-                  //       if(this.defaultStartMonth>this.defaultEndMonth){
-                  //           this.$message.error("开始月份不能大于结束月份");
-                  //           this.defaultStartMonth=_defaultStartMonth
-                  //           this.defaultEndMonth = _defaultEndMonth
-                  //           return;
-                  //       } 
-
-                  //   }
-                  //   else{
+                    else{
                         if(this.defaultStartDate>this.defaultEndDate){
                             this.$message.error("开始时间不能大于结束时间");
                             this.defaultStartDate=_defaultStartDate
                             this.defaultEndDate = _defaultEndDate
                             return;
                         } 
-                    // }
+                    }
 
 
                 if(this.selectTime==1){
                     this.selectAll=false;
-                    // this.drawCharts();
+                    this.drawCharts();
                 }           
             },
+
+            
             clickAgain(){ 
                 console.log("clickAgain")
                  this.selectTime=1;
             },
-            queryAll(){  
+            queryAll:function(){  
                 console.log('queryAll')
                 if(this.selectAll){
                     this.selectTime=0;
@@ -445,34 +393,34 @@
 
                 }
                 //改变来时间控件／全选，全部查询
-                // this.drawCharts();
+                this.drawCharts();
             },
 
             drawCharts() {
                 console.log("drawCharts")  
-                // this.drawColumnTotal()
-                // this.changePay();
-                // this.changeMember();
-                // this.changeEducation();
-                // this.changeNation();
-                // this.changeGender();        
+                this.drawColumnTotal()
+                this.changePay();
+                this.changeMember();
+                this.changeEducation();
+                this.changeNation();
+                this.changeGender();        
                
             },
-            changePay(){
-                console.log('changePay')
+            changePay:function(){
+                console.log('changePay');
                 if(this.radioPay=="1")
                     this.drawColumnPayFirst()
                 else
                     this.drawColumnPaySecond() 
             },
-            changeMember(){
+            changeMember:function(){
                 console.log("changeMember")
                 if(this.radioMember=="1")
                     this.drawColumnMemberFirst()
                 else
                     this.drawColumnMemberSecond() 
             },
-            changeEducation(){
+            changeEducation:function(){
                 console.log("changeEducation")
 
                 if(this.radioEducation=="1")
@@ -480,7 +428,7 @@
                 else
                     this.drawColumnEducationSecond() 
             },
-            changeNation(){
+            changeNation:function(){
                 console.log("changeNation")
 
                 if(this.radioNation=="1")
@@ -488,7 +436,7 @@
                 else
                     this.drawColumnNationSecond() 
             },
-            changeGender(){
+            changeGender:function(){
                 console.log("changeGender")
 
                 if(this.radioGender=="1")
@@ -527,7 +475,7 @@
             selsChange: function (sels) {
                 this.sels = sels;
             },
-            drawColumnTotal() {
+            drawColumnTotal:function() {
                 console.log("drawColumnTotal")
                 if(this.defaultType == "year"){
                     this.queryDataTotalByYear();
@@ -780,8 +728,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getPayStatus(ret).then((res) => {
-                    console.log("getPayStatus")
+                getPayStatus(ret).then((res) => { 
                     // res = JSON.parse(res)
 
                     // this.totalcount = this.form.totalcount;
@@ -883,8 +830,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getPayStatus(ret).then((res) => {
-                    console.log("getPayStatus")
+                getPayStatus(ret).then((res) => { 
                     // res = JSON.parse(res) 
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false; 
@@ -972,8 +918,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getMemeberStatus(ret).then((res) => {
-                    console.log("drawColumnMemberFirst")
+                getMemeberStatus(ret).then((res) => { 
                     // res = JSON.parse(res)
 
                     if(res.status>0){
@@ -1060,8 +1005,7 @@
                 });
             },
             // 会员柱状图
-            drawColumnMemberSecond () {
-                console.log("drawColumnMemberSecond")
+            drawColumnMemberSecond () { 
                 let para = {
                     Committeeid : global_.Committeeid,
                     Key : global_.key,
@@ -1165,8 +1109,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getEducationStatus(ret).then((res) => {
-                    console.log("chartEducationFirst")
+                getEducationStatus(ret).then((res) => { 
                     // res = JSON.parse(res)
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
@@ -1270,8 +1213,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getEducationStatus(ret).then((res) => {
-                    console.log("drawColumnEducationSecond")
+                getEducationStatus(ret).then((res) => { 
                     // res = JSON.parse(res) 
                     if(res.status>0){
                         this.$message.error("学历"+res.desc);
@@ -1364,8 +1306,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getNationStatus(ret).then((res) => {
-                    console.log("drawColumnNationFirst")
+                getNationStatus(ret).then((res) => { 
                     // res = JSON.parse(res)
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
@@ -1470,8 +1411,7 @@
                 }
                 this.listLoading = true;
                 // URIEncoding="UTF-8";
-                getNationStatus(ret).then((res) => {
-                    console.log("drawColumnNationSecond")
+                getNationStatus(ret).then((res) => { 
                     // res = JSON.parse(res)
                     if(res.status>0){
                         this.$message.error("民族"+res.desc);
@@ -1552,8 +1492,7 @@
 
 
             //性别－饼状图
-            drawColumnGenderFirst() {          
-                    console.log("drawColumnGenderFirst") 
+            drawColumnGenderFirst() {           
                 let para = {
                     Committeeid : global_.Committeeid,
                     Key : global_.key,
@@ -1665,8 +1604,7 @@
                 });
             },
             // 性别柱状图
-            drawColumnGenderSecond () {
-                console.log("drawColumnGenderSecond")
+            drawColumnGenderSecond () { 
                 let para = {
                     Committeeid : global_.Committeeid,
                     Key : global_.key,
@@ -1759,7 +1697,7 @@
         },
         mounted() {
             console.log("mounted")
-            // this.drawColumnTotal();
+            this.drawCharts();
         },
         updated: function () { 
         },
