@@ -111,7 +111,8 @@
                     this.member_data=temp['member_data'];
                     this.member_column=temp['member_column'];
                     this.member_value=temp['member_value']; 
-                     
+                    // console.log(1111111111111)
+                    // console.log(this.member_column)
                      //页面
                     this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));
                     //请求
@@ -143,33 +144,48 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
+                                          
                                 }
                             }
                         ],
-                    color:global_.colorSelect,
+                        color:global_.colorSelect,
 
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
+                                // orient:"horizontal",
+                                // itemSize:15,
+                                // itemGap:10,
+                                // showTitle:false,
 
-                    　　feature: {
 
-                    　　　　saveAsImage: {
-                                name:"职称分布饼状图",
+                        　　feature: {
 
-                        　　　　show:true,
+                        　　　　saveAsImage: {
+                                    name:"职称分布饼状图",
 
-                        　　　　excludeComponents :['toolbox'],
 
-                        　　　　pixelRatio: 2,
-                                title:'下载'
 
-                    　　　　}
+                            　　　　show:true,
 
-                    　　}
+                            　　　　excludeComponents :['toolbox'],
 
-                    }
+                            　　　　pixelRatio: 2,
+                                    title:'下载'
+
+                        　　　　}, 
+
+                        　　}
+
+                        }
                     }); 
 
 
@@ -195,9 +211,13 @@
                                             var colorList = global_.colorSelect;
                                             return colorList[params.dataIndex]
 
-                                        },             
+                                        },    
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }      
 
-                                    }
+                                    }, 
                                 },
                         }],
 

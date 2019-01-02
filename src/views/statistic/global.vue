@@ -79,6 +79,8 @@ const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue',
             member_data.pop();
 
         }  
+        console.log(2222222222)
+        console.log(member_column)
         member_column = member_column.concat(member_column_bak,member_column_bak2)
         member_value = member_value.concat(member_value_bak,member_value_bak2)
 

@@ -112,8 +112,7 @@
                     <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
                 </el-col>
                 <el-col :span="23" v-show="radioMember==2">
-                    <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
-                
+                    <div id="chartMemberSecond" style="width:100%; height:400px;"></div>                
                 </el-col>
             </div>  
         </div>
@@ -693,7 +692,8 @@
                             name: '人数',
                             type: 'line',
                             stack: '总量',
-                            data: newData
+                            data: newData,
+                            itemStyle : { normal: {label : {show: true}}}
                         }, 
                     ],
                     toolbox: {
@@ -736,7 +736,11 @@
                                     //     var colorList = global_.colorSelect;
                                     //     return colorList[params.dataIndex]
 
-                                    // },             
+                                    // },   ,
+                                       label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }           
 
                                 }
                             },
@@ -825,7 +829,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -910,7 +921,11 @@
                                         var colorList = global_.colorSelect;
                                         return colorList[params.dataIndex]
 
-                                    },             
+                                    },
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }                  
 
                                 }
                             },
@@ -1006,7 +1021,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -1091,7 +1113,11 @@
                                         var colorList = global_.colorSelect;
                                         return colorList[params.dataIndex]
 
-                                    },             
+                                    },
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }                  
 
                                 }
                             },
@@ -1191,7 +1217,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -1281,7 +1314,11 @@
                                         var colorList = global_.colorSelect;
                                         return colorList[params.dataIndex]
 
-                                    },             
+                                    },
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }                  
 
                                 }
                             },
@@ -1380,7 +1417,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -1470,7 +1514,11 @@
                                         var colorList = global_.colorSelect;
                                         return colorList[params.dataIndex]
 
-                                    },             
+                                    },
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }                  
 
                                 }
                             },
@@ -1567,7 +1615,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -1666,7 +1721,11 @@
                                         var colorList = global_.colorSelect;
                                         return colorList[params.dataIndex]
 
-                                    },             
+                                    },       
+                                     label:{ 
+                                        show: true, 
+                                        position:'top'
+                                     }           
 
                                 }
                             },

@@ -150,32 +150,39 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
-                    color:global_.colorSelect,
+                        color:global_.colorSelect,
 
-                    toolbox: {
+                        toolbox: {
 
-                    　　show: true,
+                        　　show: true,
 
-                    　　feature: {
+                        　　feature: {
 
-                    　　　　saveAsImage: {
-                                name:"新增会员分布饼状图",
-                    　　　　show:true,
+                        　　　　saveAsImage: {
+                                    name:"新增会员分布饼状图",
+                        　　　　show:true,
 
-                    　　　　excludeComponents :['toolbox'],
+                        　　　　excludeComponents :['toolbox'],
 
-                    　　　　pixelRatio: 2,
-                            title:'下载'
+                        　　　　pixelRatio: 2,
+                                title:'下载'
 
-                    　　　　}
+                        　　　　}
 
-                    　　}
+                        　　}
 
-                    }
+                        }
                     }); 
 
 
@@ -201,7 +208,11 @@
                                             var colorList = ["orange",global_.colorSelect[0],global_.colorSelect[1]];
                                             return colorList[params.dataIndex]
 
-                                        },             
+                                        },    
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }         
 
                                     }
                                 },

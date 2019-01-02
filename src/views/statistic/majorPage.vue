@@ -142,7 +142,14 @@
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
                                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
+                                    },
+                                     normal:{ 
+                                           label:{ 
+                                              show: true, 
+                                              formatter: '{b} : {c} ({d}%)' 
+                                           }, 
+                                           labelLine :{show:true} 
+                                     } 
                                 }
                             }
                         ],
@@ -194,7 +201,11 @@
                                             var colorList = global_.colorSelect;
                                             return colorList[params.dataIndex]
 
-                                        },             
+                                        }, 
+                                           label:{ 
+                                              show: true, 
+                                              position:'top'
+                                           }   
 
                                     }
                                 },
