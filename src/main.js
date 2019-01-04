@@ -25,7 +25,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  NProgress.start();
+  // NProgress.start();
   if (to.path == '/login') {
     // sessionStorage.removeItem('user');
   }
