@@ -77,7 +77,7 @@
         <div style="margin-top: 10px;margin-bottom: 10px">
             <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">会员总数：{{totalMemers}}</span>
         </div>
-        <div>
+        <div style="margin: 20px 0 20px 0">
             <el-col>
                   <el-radio-group v-model="radioTotal" @change="drawColumnTotal">
                     <el-radio :label="1">会员走势图</el-radio>
@@ -93,17 +93,13 @@
 
         </div>
         <div>
-            <div  style="float:left;width:50%;">
+            <div  style="float:left;width:50%;margin-top: 20px;border: 1px solid #000;padding: 5px 0 0 5px">
                 <el-col> 
-
                   <el-radio-group v-model="radioPay" @change="changePay">
                     <el-radio :label="1">缴费饼状图</el-radio>
                     <el-radio :label="2">缴费柱状图</el-radio> 
                   </el-radio-group> 
-
                 </el-col>
-
-
                 <el-col :span="24" v-show="radioPay==1">
                     <div id="chartPayFirst" style="width:100%; height:400px;"></div>
                 </el-col>
@@ -111,7 +107,7 @@
                     <div id="chartPaySecond" style="width:100%; height:400px;"></div>
                 </el-col>
             </div>
-            <div  style="float:right;width:45%;">
+            <div  style="float:right;width:48%;;margin-top: 20px;border: 1px solid #000;padding: 5px 0 0 5px">
                 <el-col> 
                   <el-radio-group v-model="radioMember" @change="changeMember">
                     <el-radio :label="1">会员饼状图</el-radio>
@@ -126,8 +122,8 @@
                 </el-col>
             </div>  
         </div>
-        <div>
-            <div style="float:left;width:50%;">
+        <div style="margin: 20px 0 0px 0">
+            <div style="float:left;width:50%;margin-top: 20px;border: 1px solid #000;padding: 5px 0 0 5px">
                 <el-col> 
 
                   <el-radio-group v-model="radioEducation" @change="changeEducation">
@@ -143,7 +139,7 @@
                     <div id="chartEducationSecond" style="width:100%; height:400px;"></div>
                 </el-col>
             </div>
-            <div style="float:right;width:45%;">
+            <div style="float:right;width:48%;margin-top: 20px;border: 1px solid #000;padding: 5px 0 0 5px">
                 <el-col> 
                   <el-radio-group v-model="radioNation" @change="changeNation">
                     <el-radio :label="1">民族饼状图</el-radio>
@@ -158,20 +154,22 @@
                 </el-col>
             </div>
         </div>
-        <el-col >
-            <el-col> 
-                  <el-radio-group v-model="radioGender" @change="changeGender">
-                    <el-radio :label="1">性别饼状图</el-radio>
-                    <el-radio :label="2">性别柱状图</el-radio> 
-                  </el-radio-group> 
-            </el-col>
-            <el-col :span="12" v-show="radioGender==1">
-                <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12" v-show="radioGender==2">
-                <div id="chartGenderSecond" style="width:100%; height:400px;"></div>
-            </el-col>
-        </el-col > 
+        <div style="margin: 20px 0 0px 0" >
+            <div style="float: left;width: 50%;margin-top: 20px;border: 1px solid #000;padding: 5px 0 0 5px">
+                <el-col> 
+                      <el-radio-group v-model="radioGender" @change="changeGender">
+                        <el-radio :label="1">性别饼状图</el-radio>
+                        <el-radio :label="2">性别柱状图</el-radio> 
+                      </el-radio-group> 
+                </el-col>
+                <el-col :span="23" v-show="radioGender==1">
+                    <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
+                </el-col>
+                <el-col :span="23" v-show="radioGender==2">
+                    <div id="chartGenderSecond" style="width:100%; height:400px;"></div>
+                </el-col>
+            </div>
+        </div > 
         
 
         <!--工具条-->
@@ -754,7 +752,8 @@
                         },
                         tooltip: {
                             trigger: 'item',
-                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            formatter: "{a} <br/>{b} : {c} ({d}%)",
+
                         },
                         legend: {
                             orient: 'vertical',
@@ -1127,9 +1126,31 @@
                         tep.name = res.data[i].name;
                         this.education_data[i] = tep;
                         this.education_dataColumn[i] = tep['name'];
-                    }   
+                    }    
+
+                    // console.log(111111111)
+                    // console.log(res)
+                    // console.log(this.education_data)
+                    // for(var i =res.data.length-1;i>=0;i--){
+                    //     if((res.data.length-i)>=displayCount){
+                    //         break;
+                    //     }
+                    //     var tep ={};var temp= []; 
+                    //     tep.value = res.data[i].count;
+                    //     tep.name = res.data[i].name;
+                    //     this.education_data[i] = tep;
+                    //     this.education_dataColumn[i] = tep['name'];
+                    // }   
+
+                    //为了页面展示，做了反转数据
+                    // this.education_data = this.education_data.reverse() 
+                    // let thisColor = [];
+                    // for(var i = global_.colorSelect.length-1;i>=0;i--){
+                    //     thisColor.push(global_.colorSelect[i])
+                    // }
+
                     
-                     //页面
+                    //页面
                     this.chartEducationFirst = echarts.init(document.getElementById('chartEducationFirst'));
                     //请求
 
@@ -1145,7 +1166,7 @@
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left',
+                            left: 'right',
                             data: this.education_dataColumn
                         },
                         series: [
@@ -1176,7 +1197,7 @@
                         toolbox: {
 
                         　　show: true,
-
+                            left:'left',
                         　　feature: {
 
                         　　　　saveAsImage: {
@@ -1343,7 +1364,7 @@
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left',
+                            left: 'right',
                             data: this.nation_dataColumn
                         },
                         series: [
@@ -1374,6 +1395,7 @@
                         toolbox: {
 
                         　　show: true,
+                            left:'left',
 
                         　　feature: {
 

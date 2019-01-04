@@ -151,7 +151,8 @@
                                      normal:{ 
                                            label:{ 
                                               show: true, 
-                                              formatter: '{b} : {c} ({d}%)' 
+                                              formatter: '{b} : {c} ({d}%)' ,
+                                              trigger:"axis"
                                            }, 
                                            labelLine :{show:true} 
                                      } 

@@ -25,10 +25,11 @@
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
         </div> 
         <div style="margin-top: 10px;margin-bottom: 10px">
-            <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">统计会员总数：{{totalMemers}}</span>
-            <span style="font-size: 20px">统计理事总数：{{totalCompany}}</span>
+            <span style="font-size: 20px;margin-right: 30px;font-weight: 4px">统计会员总数：{{totalMemers}}</span>
+            <span style="font-size: 20px">统计理事单位总数：{{totalCompany}}</span>
         </div> 
         <div class="echarts">
+            <div style="float: left; width: 100%;;margin-left: 30%;font-size: 16px;margin-top: 20px">会员地域分布</div>
             <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchart"></div>
             <div style="float:right;">
                 <i class="fa fa-arrow-down" aria-hidden="true"  @click="download(1)"></i>
@@ -42,6 +43,7 @@
         </div>
  
         <div class="echarts">
+            <div style="float: left;width: 100%;margin-left: 30%;font-size: 16px;margin-top: 20px">理事单位地域分布</div>
             <div :style="{height:'400px',width:'70%',float:'left'}" ref="myEchartCompany"></div>
             <!-- <i class="el-icon-delete"></i> -->
             <div style="float:right;">

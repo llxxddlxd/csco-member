@@ -2,11 +2,11 @@
 const Committeeid=1;
 const key='79ECFB2F3F0C098B'; 
 const colorSelect = ['red', 'green','orange','blueviolet','gray','black','blue','purple','yellow','pink'];
-  export default
+   export default
   {
     Committeeid, 
     key,  
-    colorSelect,
+    colorSelect, 
     operatorData:function(data,totalCount){
     	let tempcount =0;
         let mark =0;
