@@ -757,7 +757,7 @@
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left',
+                            left: 'right',
                             data: ['未缴费', '已缴费']
                         },
                         series: [
@@ -791,6 +791,7 @@
                         toolbox: {
 
                         　　show: true,
+                            left: 'left',
 
                         　　feature: {
 
@@ -947,7 +948,7 @@
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left',
+                            left: 'right',
                             data: ['初级会员', '正式会员']
                         },
                         series: [
@@ -981,6 +982,7 @@
                         toolbox: {
 
                         　　show: true,
+                            left: 'left',
 
                         　　feature: {
 
@@ -1561,7 +1563,7 @@
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left',
+                            left: 'right',
                             data: this.gender_unPay
                         },
                         series: [
@@ -1592,6 +1594,7 @@
                         toolbox: {
 
                         　　show: true,
+                            left: 'left',
 
                         　　feature: {
 
