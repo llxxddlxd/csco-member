@@ -83,6 +83,7 @@
                     <el-radio :label="1">会员走势图</el-radio>
                     <el-radio :label="2">会员柱状图</el-radio> 
                   </el-radio-group> 
+                    <a @click="download(1,'会员')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
             </el-col>
             <el-col :span="22" v-show="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
@@ -99,6 +100,7 @@
                     <el-radio :label="1">缴费饼状图</el-radio>
                     <el-radio :label="2">缴费柱状图</el-radio> 
                   </el-radio-group> 
+                    <a @click="download(2,'缴费')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
                 </el-col>
                 <el-col :span="24" v-show="radioPay==1">
                     <div id="chartPayFirst" style="width:100%; height:400px;"></div>
@@ -113,6 +115,7 @@
                     <el-radio :label="1">会员饼状图</el-radio>
                     <el-radio :label="2">会员柱状图</el-radio> 
                   </el-radio-group> 
+                    <a @click="download(3,'会员')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
                 </el-col>
                 <el-col :span="24" v-show="radioMember==1">
                     <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
@@ -130,6 +133,7 @@
                     <el-radio :label="1">教育饼状图</el-radio>
                     <el-radio :label="2">教育柱状图</el-radio> 
                   </el-radio-group> 
+                    <a @click="download(4,'教育')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
                 </el-col>
 
                 <el-col :span="24" v-show="radioEducation==1">
@@ -145,6 +149,7 @@
                     <el-radio :label="1">民族饼状图</el-radio>
                     <el-radio :label="2">民族柱状图</el-radio> 
                   </el-radio-group> 
+                    <a @click="download(5,'民族')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
                 </el-col>
                 <el-col :span="24" v-show="radioNation==1">
                     <div id="chartNationFirst" style="width:100%; height:400px;"></div>
@@ -161,6 +166,7 @@
                         <el-radio :label="1">性别饼状图</el-radio>
                         <el-radio :label="2">性别柱状图</el-radio> 
                       </el-radio-group> 
+                    <a @click="download(6,'性别')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
                 </el-col>
                 <el-col :span="23" v-show="radioGender==1">
                     <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
@@ -171,7 +177,42 @@
             </div>
         </div > 
         
-
+        <el-table  :data="first_data" v-model="first_data" style="width: 100%;display: true" id="table_excel1">
+          <el-table-column  prop="name" label="会员" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table>
+        <el-table  :data="pay_data" v-model="pay_data" style="width: 100%;display: none" id="table_excel2">
+          <el-table-column  prop="name" label="缴费状态" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table> 
+        <el-table  :data="member_data" v-model="member_data" style="width: 100%;display: none" id="table_excel3">
+          <el-table-column  prop="name" label="会员类型" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table> 
+        <el-table  :data="education_data" v-model="education_data" style="width: 100%;display: none" id="table_excel4">
+          <el-table-column  prop="name" label="学历" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table> 
+        <el-table  :data="nation_data" v-model="nation_data" style="width: 100%;display: none" id="table_excel5">
+          <el-table-column  prop="name" label="民族" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table>  
+        <el-table  :data="gender_hasPay" v-model="gender_hasPay" style="width: 100%;display: none" id="table_excel6">
+          <el-table-column  prop="name" label="性别" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table> 
         <!--工具条-->
 <!--         <el-col :span="24" class="toolbar">
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
@@ -189,6 +230,8 @@
         ,getMemberByYear,getMemberByMonth,getMemberByDay} from '../../api/api';
     // import moment from 'moment'
     import echarts from 'echarts'
+    import FileSaver from 'file-saver'
+    import XLSX from 'xlsx'
     import global_ from './global'
     var now = new Date();
 
@@ -261,10 +304,14 @@
                 chartGenderFirst: null,
                 chartGenderSecond: null,
 
+                first_data:[],
+                pay_data:[],
                 pay_unPay:0,
                 pay_hasPay:0,
                 member_unPay:0,
                 member_hasPay:0,
+                member_data:[],
+                pay_data:[],
                 education_dataColumn:[],
                 education_data:[],
                 nation_dataColumn:[],
@@ -275,7 +322,17 @@
                 selectTime:1,
             }
         },
-        methods: {
+        methods: { 
+            download (value,name) {
+                 /* generate workbook object from table */
+                 var wb = XLSX.utils.table_to_book(document.querySelector("#table_excel"+value))
+                 /* get binary string as output */
+                 var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+                 try {
+                     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), name+'.xlsx')
+                 } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+                 return wbout
+             }, 
             dimensionChange:function(){
                 console.log('dimensionCHange')
                 //切换选项卡，默认恢复到最初的统计：取消全选，加上时间范围
@@ -607,6 +664,13 @@
 
             },
             drawTotalFirst:function(newColumn,newData){
+                this.first_data = [];
+                for(var i = 0;i<newData.length;i++){
+                    var temp = Array();
+                    temp['name'] = newColumn[i];
+                    temp['value'] = newData[i];
+                    this.first_data.push(temp);
+                } 
 
                 this.chartLine = echarts.init(document.getElementById('chartTotalFirst'));
                 this.chartLine.setOption({
@@ -660,6 +724,13 @@
             },
 
             drawTotalSecond:function(newColumn,newData){  
+                this.first_data = [];
+                for(var i = 0;i<newData.length;i++){
+                    var temp = Array();
+                    temp['name'] = newColumn[i];
+                    temp['value'] = newData[i];
+                    this.first_data.push(temp);
+                } 
                 this.chartTotalSecond = echarts.init(document.getElementById('chartTotalSecond'));
                     var names = newColumn;
                     this.chartTotalSecond.setOption({
@@ -736,8 +807,17 @@
                         this.$message.error("缴费"+res.desc);
                         return;
                     }
+                    this.pay_data=[];
                     this.pay_unPay = res.outdata.unPay;
                     this.pay_hasPay = res.outdata.hasPay;
+                    var temp = new Array();
+                    temp['name'] = "未缴费";
+                    temp['value'] = this.pay_unPay;
+                    this.pay_data.push(temp);
+                    var temp = new Array();
+                    temp['name'] = "已缴费";
+                    temp['value'] = this.pay_hasPay;
+                    this.pay_data.push(temp);
 
                     
                      //页面
@@ -840,6 +920,17 @@
                     }
                     this.pay_unPay = res.outdata.unPay;
                     this.education_hasPay = res.outdata.hasPay; 
+
+
+                    this.pay_data=[];
+                    var temp = new Array();
+                    temp['name'] = "未缴费";
+                    temp['value'] = this.pay_unPay;
+                    this.pay_data.push(temp);
+                    var temp = new Array();
+                    temp['name'] = "已缴费";
+                    temp['value'] = this.education_hasPay;
+                    this.pay_data.push(temp);
                     
                     this.chartPaySecond = echarts.init(document.getElementById('chartPaySecond'));
                     var names = ["未缴费", "已缴费"];
@@ -930,7 +1021,18 @@
 
 
                     this.member_unPay = res.outdata['初级会员'];
-                    this.member_hasPay = res.outdata['正式会员']
+                    this.member_hasPay = res.outdata['正式会员'];
+
+                    this.member_data=[];
+                    var temp = new Array();
+                    temp['name'] = "初级会员";
+                    temp['value'] = this.member_unPay;
+                    this.member_data.push(temp);
+                    var temp = new Array();
+                    temp['name'] = "正式会员";
+                    temp['value'] = this.member_hasPay;
+                    this.member_data.push(temp);
+                    
                      
                      //页面
                     this.chartMemberFirst = echarts.init(document.getElementById('chartMemberFirst'));
@@ -1030,6 +1132,18 @@
                     }
                     this.member_unPay = res.outdata['初级会员'];
                     this.member_hasPay = res.outdata['正式会员'];
+
+
+                    this.member_data=[];
+                    var temp = new Array();
+                    temp['name'] = "初级会员";
+                    temp['value'] = this.member_unPay;
+                    this.member_data.push(temp);
+                    var temp = new Array();
+                    temp['name'] = "正式会员";
+                    temp['value'] = this.member_hasPay;
+                    this.member_data.push(temp);
+                    
                     
                     this.chartMemberSecond = echarts.init(document.getElementById('chartMemberSecond'));
                     

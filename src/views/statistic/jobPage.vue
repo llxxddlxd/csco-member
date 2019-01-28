@@ -23,6 +23,8 @@
               placeholder="选择日">
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
+            <!-- <i class="fa fa-arrow-down" aria-hidden="true" @click="download()" style="margin-left: 10px">111</i> -->
+            <a @click="download()" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
         </div> 
         <div style="margin-top: 10px;margin-bottom: 10px">
             <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">统计会员总数：{{totalMemers}}</span>
@@ -31,7 +33,13 @@
         <div> 
             <div id="chartMemberFirst" style="width:100%; height:400px;"></div>             
             <div id="chartMemberSecond" style="width:100%; height:400px;"></div>
-        </div> 
+        </div>
+         <el-table  :data="member_data" v-model="member_data" style="width: 100%;display: none" id="table_excel">
+          <el-table-column  prop="name" label="职务" width="180">
+          </el-table-column>
+          <el-table-column  prop="value" label="人数" width="180">
+          </el-table-column> 
+        </el-table> 
     </section>
 </template>
 
@@ -43,6 +51,8 @@
     import { getJob} from '../../api/api';
     // import moment from 'moment'
     import echarts from 'echarts' 
+    import FileSaver from 'file-saver'
+    import XLSX from 'xlsx'
     var now = new Date();
    
     export default {
@@ -78,6 +88,16 @@
             }
         },
         methods: { 
+            download () {
+                 /* generate workbook object from table */
+                 var wb = XLSX.utils.table_to_book(document.querySelector("#table_excel"))
+                 /* get binary string as output */
+                 var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+                 try {
+                     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '单位职务统计.xlsx')
+                 } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+                 return wbout
+             }, 
             handleCurrentChange(val) {
                 this.page = val;
                 this.getConsume();
@@ -177,7 +197,11 @@
                         　　　　     pixelRatio: 2,
                                     title:'下载'
 
-                        　　　　}
+                        　　　　},
+                                dataView:{
+                                    show:true,
+                                    title:"数据"
+                                }
 
                         　　}
 
