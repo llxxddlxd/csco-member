@@ -83,7 +83,7 @@
                     <el-radio :label="1">会员走势图</el-radio>
                     <el-radio :label="2">会员柱状图</el-radio> 
                   </el-radio-group> 
-                    <a @click="download(1,'会员')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                  <a @click="download(1,'会员')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
             </el-col>
             <el-col :span="22" v-show="radioTotal==1">
                 <div id="chartTotalFirst" style="width:100%; height:400px;"></div>
@@ -100,7 +100,7 @@
                     <el-radio :label="1">缴费饼状图</el-radio>
                     <el-radio :label="2">缴费柱状图</el-radio> 
                   </el-radio-group> 
-                    <a @click="download(2,'缴费')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                  <a @click="download(2,'缴费')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
                 </el-col>
                 <el-col :span="24" v-show="radioPay==1">
                     <div id="chartPayFirst" style="width:100%; height:400px;"></div>
@@ -115,7 +115,7 @@
                     <el-radio :label="1">会员饼状图</el-radio>
                     <el-radio :label="2">会员柱状图</el-radio> 
                   </el-radio-group> 
-                    <a @click="download(3,'会员')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                   <a @click="download(3,'会员')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
                 </el-col>
                 <el-col :span="24" v-show="radioMember==1">
                     <div id="chartMemberFirst" style="width:100%; height:400px;"></div>
@@ -133,7 +133,8 @@
                     <el-radio :label="1">教育饼状图</el-radio>
                     <el-radio :label="2">教育柱状图</el-radio> 
                   </el-radio-group> 
-                    <a @click="download(4,'教育')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                    <a @click="download(4,'教育')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
+
                 </el-col>
 
                 <el-col :span="24" v-show="radioEducation==1">
@@ -149,7 +150,7 @@
                     <el-radio :label="1">民族饼状图</el-radio>
                     <el-radio :label="2">民族柱状图</el-radio> 
                   </el-radio-group> 
-                    <a @click="download(5,'民族')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                  <a @click="download(5,'民族')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
                 </el-col>
                 <el-col :span="24" v-show="radioNation==1">
                     <div id="chartNationFirst" style="width:100%; height:400px;"></div>
@@ -166,7 +167,7 @@
                         <el-radio :label="1">性别饼状图</el-radio>
                         <el-radio :label="2">性别柱状图</el-radio> 
                       </el-radio-group> 
-                    <a @click="download(6,'性别')" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+                    <a @click="download(6,'性别')" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
                 </el-col>
                 <el-col :span="23" v-show="radioGender==1">
                     <div id="chartGenderFirst" style="width:100%; height:400px;"></div>
@@ -177,7 +178,7 @@
             </div>
         </div > 
         
-        <el-table  :data="first_data" v-model="first_data" style="width: 100%;display: true" id="table_excel1">
+        <el-table  :data="first_data" v-model="first_data" style="width: 100%;display: none" id="table_excel1">
           <el-table-column  prop="name" label="会员" width="180">
           </el-table-column>
           <el-table-column  prop="value" label="人数" width="180">
@@ -195,19 +196,19 @@
           <el-table-column  prop="value" label="人数" width="180">
           </el-table-column> 
         </el-table> 
-        <el-table  :data="education_data" v-model="education_data" style="width: 100%;display: none" id="table_excel4">
+        <el-table  :data="education_data1" v-model="education_data1" style="width: 100%;display: none" id="table_excel4">
           <el-table-column  prop="name" label="学历" width="180">
           </el-table-column>
           <el-table-column  prop="value" label="人数" width="180">
           </el-table-column> 
         </el-table> 
-        <el-table  :data="nation_data" v-model="nation_data" style="width: 100%;display: none" id="table_excel5">
+        <el-table  :data="nation_data1" v-model="nation_data1" style="width: 100%;display: none" id="table_excel5">
           <el-table-column  prop="name" label="民族" width="180">
           </el-table-column>
           <el-table-column  prop="value" label="人数" width="180">
           </el-table-column> 
         </el-table>  
-        <el-table  :data="gender_hasPay" v-model="gender_hasPay" style="width: 100%;display: none" id="table_excel6">
+        <el-table  :data="gender_data1" v-model="gender_data1" style="width: 100%;display: none" id="table_excel6">
           <el-table-column  prop="name" label="性别" width="180">
           </el-table-column>
           <el-table-column  prop="value" label="人数" width="180">
@@ -314,10 +315,13 @@
                 pay_data:[],
                 education_dataColumn:[],
                 education_data:[],
+                education_data1:[],
                 nation_dataColumn:[],
                 nation_data:[],
+                nation_data1:[],
                 gender_unPay:[],
                 gender_hasPay:[],
+                gender_data1:[],
                 selectAll:false,
                 selectTime:1,
             }
@@ -1233,6 +1237,9 @@
                         return;
                     }
                     // return;
+
+                    this.education_data1=[];
+                    
                     for(var i =0;i<res.data.length;i++){
                         if(i>=displayCount){
                             break;
@@ -1242,10 +1249,15 @@
                         tep.name = res.data[i].name;
                         this.education_data[i] = tep;
                         this.education_dataColumn[i] = tep['name'];
+
+                        var temp = new Array();
+                        temp['name'] = tep.name;
+                        temp['value'] = tep.value;
+                        this.education_data1.push(temp);
                     }    
 
                     // console.log(111111111)
-                    // console.log(res)
+                    console.log(this.education_data)
                     // console.log(this.education_data)
                     // for(var i =res.data.length-1;i>=0;i--){
                     //     if((res.data.length-i)>=displayCount){
@@ -1357,6 +1369,7 @@
                         return;
                     }
                     // this.totalcount = this.form.totalcount;
+                    this.education_data1=[];
                     this.listLoading = false;
                      for(var i =0;i<res.data.length;i++){    
                         if(i>=displayCount){
@@ -1364,6 +1377,12 @@
                         }
                         this.education_data[i] = res.data[i].count;
                         this.education_dataColumn[i] = res.data[i].name;
+
+
+                        var temp = new Array();
+                        temp['name'] = res.data[i].name;
+                        temp['value'] = res.data[i].count;
+                        this.education_data1.push(temp);
                     }  
                     
                     
@@ -1453,6 +1472,7 @@
                         return;
                     }
                     // return;
+                    this.nation_data1 = [];
                     for(var i =0;i<res.data.length;i++){  
                         if(i>=displayCount){
                             break;
@@ -1462,6 +1482,12 @@
                         tep.name = res.data[i].name;
                         this.nation_data[i] = tep;
                         this.nation_dataColumn[i] = tep['name'];
+
+
+                        var temp = new Array();
+                        temp['name'] = tep.name;
+                        temp['value'] = tep.value;
+                        this.nation_data1.push(temp);
                     }  
                     
                      //页面
@@ -1557,12 +1583,21 @@
                     }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
+
+                    this.nation_data1 = [];
+
                      for(var i =0;i<res.data.length;i++){    
                         if(i>=displayCount){
                             break;
                         }
                         this.nation_data[i] = res.data[i].count;
                         this.nation_dataColumn[i] = res.data[i].name;
+
+
+                        var temp = new Array();
+                        temp['name'] = res.data[i].name;
+                        temp['value'] = res.data[i].count ;
+                        this.nation_data1.push(temp);
                     }   
                     
                     
@@ -1652,12 +1687,19 @@
                         this.$message.error("性别"+res.desc);
                         return;
                     }
+                    this.gender_data1=[];
                     for(var i=0;i<2;i++){
                         this.gender_unPay[i] = res.data[i].name;
                         var tmp = {};
                         tmp.value = res.data[i].count;
                         tmp.name = res.data[i].name;
                         this.gender_hasPay[i] = tmp;
+
+
+                        var temp = new Array();
+                        temp['name'] = tmp.name;
+                        temp['value'] = tmp.value;
+                        this.gender_data1.push(temp);
 
                     } 
                      
@@ -1765,10 +1807,17 @@
                     }
                     // this.totalcount = this.form.totalcount;
                     this.listLoading = false;
+                    this.gender_data1 = [];
                     for(var i=0;i<2;i++){
                         this.gender_unPay[i] = res.data[i].name;
                         
                         this.gender_hasPay[i] = res.data[i].count;
+
+
+                        var temp = new Array();
+                        temp['name'] = res.data[i].name ;
+                        temp['value'] = res.data[i].count;
+                        this.gender_data1.push(temp);
 
                     } 
                     this.chartGenderSecond = echarts.init(document.getElementById('chartGenderSecond'));

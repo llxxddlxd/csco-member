@@ -23,7 +23,7 @@
               placeholder="选择日">
             </el-date-picker>
              <el-checkbox v-model="selectAll" @change="queryAll()">全选</el-checkbox>
-            <a @click="download()" style="color: blue;margin-left: 10px;cursor: pointer;">保存excel</a>
+            <a @click="download()" style="color: white;margin-left: 10px;cursor: pointer;background-color: #20a0ff;padding: 5px 10px;border-radius:5px">导出EXCEL</a>
         </div> 
         <div style="margin-top: 10px;margin-bottom: 10px">
             <span style="font-size: 20px;margin-right: 10px;font-weight: 4px">新增会员总数：{{totalNewMemers}}</span>
